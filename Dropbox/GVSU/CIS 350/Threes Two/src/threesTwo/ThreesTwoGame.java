@@ -14,7 +14,6 @@ package threesTwo;
 			board = new Cell[boardSize][boardSize];
 			// TODO some code to retrieve the high score from a text file.
 			// change some code. This is a change.
-			// This would be me deleting the comment in Github. 
 			status = GameStatus.IN_PROGRESS;
 		}
 
