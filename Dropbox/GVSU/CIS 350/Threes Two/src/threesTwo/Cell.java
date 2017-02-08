@@ -4,6 +4,7 @@ public class Cell {
 	
 	private boolean empty;
 	private int value;
+	// comment on Github. 
 	
 	public Cell(boolean empty, int value){
 		this.empty = empty;
