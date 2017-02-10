@@ -14,5 +14,6 @@ public class ThreesTwo {
 
 	public static void main(String[] args) {
 		// This is going to be my main class for our group project.
+		new ThreesTwoGame();
 	}
 }

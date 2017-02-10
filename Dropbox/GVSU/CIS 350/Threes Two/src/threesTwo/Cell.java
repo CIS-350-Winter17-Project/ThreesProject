@@ -7,6 +7,9 @@ public class Cell {
 	// comment on Github. 
 	
 	public Cell(boolean empty, int value){
+		
+		// I think that instead of having an empty value, the board cell should be 
+		// set to null
 		this.empty = empty;
 		this.value = value;
 	}

@@ -1,6 +1,12 @@
 package threesTwo;
 	
-	import java.util.Random;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Random;
 
 	public class ThreesTwoGame {
 		private Cell[][] board;
@@ -14,7 +20,55 @@ package threesTwo;
 			board = new Cell[boardSize][boardSize];
 			// TODO some code to retrieve the high score from a text file.
 			// change some code. This is a change.
+			
+			setHighScore();
+			
+			Random rand = new Random();
+			
+			// populate the board with 9 cells
+			for (int i=0; i<9; i++) {
+				
+				// the value for the cell
+				int val = rand.nextInt(2) + 1;
+				
+				// where the cell will be located
+				int row = rand.nextInt(4);
+				int col = rand.nextInt(4);
+				
+				if (board[row][col] == null) {
+					board[row][col] = new Cell(false, val);
+				} 
+				
+				
+			}
+			
+			// testing
+			for (int i=0; i<board.length; i++) {
+				
+				if (i == 0)
+					System.out.println("+---+---+---+---+");
+				
+				for (int j=0; j<board[i].length; j++) {
+					if (board[i][j] != null)
+						System.out.print("| " + board[i][j].getValue() + " ");
+					else if (j < 3)
+						System.out.print("|   ");
+					else
+						System.out.print("|   |");
+				}
+				
+				System.out.println("\n+---+---+---+---+");
+			}
+			
 			status = GameStatus.IN_PROGRESS;
+			
+			// this below was for testing
+			int score = 42;
+			
+			System.out.println(highScore);
+			
+			saveHighScore(score);
+				
 		}
 
 		public void Move(Direction direction) {
@@ -345,6 +399,8 @@ package threesTwo;
 		
 		private void setHighScore() {
 			
+			//System.out.println("setHighScore");
+			
 			Path file = FileSystems.getDefault().getPath(FILENAME);
 			
 	        
@@ -354,32 +410,35 @@ package threesTwo;
 
 	        } catch (IOException e) {
 	            // File does not exist, so high score is zero
+	        	//System.err.format("IOException: %s%n", e);
 	        	highScore = 0;
 	        }
 
 	    }
 		
-		private void saveHighScore() {
+		private void saveHighScore(int newScore) {
 			
-			if (score > highScore) {
 			
-				Path file = FileSystems.getDefault().getPath(FILENAME);
+			Path file = FileSystems.getDefault().getPath(FILENAME);
+				
+			//System.out.println("saveHighScore");
 			
-				String str = Integer.toString(score);
+			String str = Integer.toString(newScore);
 
-				try (BufferedWriter write = Files.newBufferedWriter(file)) {
+			try (BufferedWriter writer = Files.newBufferedWriter(file)) {
 					
-					write.write(str);
+				writer.write(str);
+				
+				//System.out.println("saved");
 					
-				} catch (IOException e) {
+			} catch (IOException e) {
 					
-					e.printStackTrace();
+				System.err.format("IOException: %s%n", e);
 					
-				}
 			}
+			
 		}
 		
 
-	}
-
 }
+
