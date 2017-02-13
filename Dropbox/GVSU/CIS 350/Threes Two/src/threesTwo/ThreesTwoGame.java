@@ -23,26 +23,31 @@ import java.util.Random;
 			
 			setHighScore();
 			
+			// create an empty board
+			for (int i=0; i<boardSize; i++) {
+				for (int j=0; j<boardSize; j++) {
+					board[i][j] = new Cell(true, 0);
+				}
+			}
+			
+			// Start the game with 9 cells
+			int startingCells = 0;
 			Random rand = new Random();
 			
-			// populate the board with 9 cells
-			for (int i=0; i<9; i++) {
+			while (startingCells < 9) {
+				int row = rand.nextInt(boardSize);
+				int col = rand.nextInt(boardSize);
 				
-				// the value for the cell
-				int val = rand.nextInt(2) + 1;
+				int val = rand.nextInt(3) + 1;
 				
-				// where the cell will be located
-				int row = rand.nextInt(4);
-				int col = rand.nextInt(4);
-				
-				if (board[row][col] == null) {
+				if (board[row][col].isEmpty()) {
 					board[row][col] = new Cell(false, val);
-				} 
-				
+					startingCells++;
+				}
 				
 			}
 			
-			// testing
+			/* testing
 			for (int i=0; i<board.length; i++) {
 				
 				if (i == 0)
@@ -59,15 +64,9 @@ import java.util.Random;
 				
 				System.out.println("\n+---+---+---+---+");
 			}
+			*/
 			
 			status = GameStatus.IN_PROGRESS;
-			
-			// this below was for testing
-			int score = 42;
-			
-			System.out.println(highScore);
-			
-			saveHighScore(score);
 				
 		}
 
