@@ -438,6 +438,10 @@ import java.util.Random;
 			
 		}
 		
+		public Cell[][] getDisplay(){
+			return board;
+		}
+		
 
 }
 
