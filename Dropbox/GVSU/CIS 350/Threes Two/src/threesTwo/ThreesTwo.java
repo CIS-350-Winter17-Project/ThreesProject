@@ -16,6 +16,10 @@ public class ThreesTwo extends JFrame {
 
 	public static void main(String[] args) {
 		// This is going to be my main class for our group project.
-		ThreesTwoGUI.mainGame();
+		SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			ThreesTwoGUI.playGame();
+    		}
+    	});
 	}
 }

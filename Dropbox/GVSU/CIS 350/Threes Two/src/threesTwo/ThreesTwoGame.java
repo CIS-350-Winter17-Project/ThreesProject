@@ -47,25 +47,6 @@ import java.util.Random;
 				
 			}
 			
-			/* testing
-			for (int i=0; i<board.length; i++) {
-				
-				if (i == 0)
-					System.out.println("+---+---+---+---+");
-				
-				for (int j=0; j<board[i].length; j++) {
-					if (board[i][j] != null)
-						System.out.print("| " + board[i][j].getValue() + " ");
-					else if (j < 3)
-						System.out.print("|   ");
-					else
-						System.out.print("|   |");
-				}
-				
-				System.out.println("\n+---+---+---+---+");
-			}
-			*/
-			
 			status = GameStatus.IN_PROGRESS;
 				
 		}
