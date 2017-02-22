@@ -1,8 +1,8 @@
 package threesTwo;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
-public class ThreesTwo extends JFrame {
+public class ThreesTwo {
 
 	/**********************************************************************
 	 * Main "Threes" class. Used only for testing purposes.
@@ -16,10 +16,6 @@ public class ThreesTwo extends JFrame {
 
 	public static void main(String[] args) {
 		// This is going to be my main class for our group project.
-		SwingUtilities.invokeLater(new Runnable() {
-    		public void run() {
-    			ThreesTwoGUI.playGame();
-    		}
-    	});
+		SwingUtilities.invokeLater(() -> ThreesTwoGUI.playGame());
 	}
 }

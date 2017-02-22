@@ -19,6 +19,8 @@ public class ThreesTwoGUI extends JPanel {
     	
     	setFocusable(true);
         requestFocusInWindow();
+        
+        setBackground(Color.WHITE);
     	
         // has the board
         game = new ThreesTwoGame();
@@ -28,18 +30,28 @@ public class ThreesTwoGUI extends JPanel {
         //holds the icons
         board = new JLabel[BOARD_SIZE][BOARD_SIZE];
         setLayout(new GridLayout(BOARD_SIZE, BOARD_SIZE, 2, 2));
-        
+                
         // for the numbers
-        Dimension d = new Dimension(24, 24);
-        Border b = BorderFactory.createLineBorder(Color.BLACK, 2);
+        Dimension d = new Dimension(48, 68);
+        
 
         for (int row: range) {
             for (int col: range ) {
+            	
+            	Color c = new Color(230, 230, 255);
+            	Border b = BorderFactory.createLineBorder(c, 2, true);
+            	
                 board[row][col] = new JLabel();
                 board[row][col].setPreferredSize(d);
+                
+                board[row][col].setBackground(c);
+                board[row][col].setForeground(Color.WHITE);
+                
                 board[row][col].setBorder(b);
-                board[row][col].setText("X"); //just for testing
+                board[row][col].setOpaque(true);
+                
                 add(board[row][col]);
+                
             }
         }
         
@@ -55,16 +67,10 @@ public class ThreesTwoGUI extends JPanel {
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				moveEvent(arg0);
-			}
+			public void keyReleased(KeyEvent arg0) {}
 
 			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				moveEvent(arg0);
-			}
+			public void keyTyped(KeyEvent arg0) {}
 			
 			private void moveEvent(KeyEvent e) {
 	        	
@@ -94,7 +100,39 @@ public class ThreesTwoGUI extends JPanel {
             	
             	int value = gameBoard[row][col].getValue();
             	
-            	board[row][col].setText(Integer.toString(value));
+            	board[row][col].setHorizontalAlignment(SwingConstants.CENTER);
+            	board[row][col].setFont(new Font("Calibri", Font.BOLD, 24));
+            	
+            	if (value == 1) {
+            		Color c = new Color(102, 102, 255);
+            		Border b = BorderFactory.createLineBorder(c, 2, true);
+            		
+            		board[row][col].setText(Integer.toString(value));
+            		board[row][col].setBackground(c);
+            		board[row][col].setBorder(b);
+            		
+            	}
+            	
+            	else if (value == 2) {
+            		Color c = new Color(255, 0, 102);
+            		Border b = BorderFactory.createLineBorder(c, 2, true);
+            		
+            		board[row][col].setText(Integer.toString(value));
+            		board[row][col].setBorder(b);
+            		board[row][col].setBackground(c);
+            		
+            	}
+            	else if (value >= 3) {
+            		
+            		Border b = BorderFactory.createLineBorder(Color.WHITE, 2, true);
+            		
+            		board[row][col].setForeground(Color.BLACK);
+            		board[row][col].setBackground(Color.WHITE);
+            		
+            		board[row][col].setBorder(b);
+            		
+            		board[row][col].setText(Integer.toString(value));
+            	}
             }
         }
 
@@ -102,12 +140,37 @@ public class ThreesTwoGUI extends JPanel {
 
     public static void playGame() {
     	
-        ThreesTwoGUI gui = new ThreesTwoGUI();
+    	ThreesTwoGUI gui = new ThreesTwoGUI();
+    	
+    	JPanel main = new JPanel(new BorderLayout());
+    	JPanel top = new JPanel();
+    	JPanel bottom = new JPanel();
+    	JPanel west = new JPanel();
+    	JPanel east = new JPanel();
+    	
+    	top.setBackground(Color.WHITE);
+    	bottom.setBackground(Color.WHITE);
+    	west.setBackground(Color.WHITE);
+    	east.setBackground(Color.WHITE);
+    	
+//    	Dimension t = new Dimension(200, 90);
+//    	Dimension s = new Dimension(40, 336);
+//    	
+//    	top.setPreferredSize(t);
+//    	bottom.setPreferredSize(t);
+//    	west.setPreferredSize(s);
+//    	east.setPreferredSize(s);
+    	
+    	main.add(top, BorderLayout.NORTH);
+    	main.add(west, BorderLayout.WEST);
+    	main.add(gui, BorderLayout.CENTER);
+    	main.add(east, BorderLayout.EAST);
+    	main.add(bottom, BorderLayout.SOUTH);
+    	
 
-        JFrame frame = new JFrame("Test");
+        JFrame frame = new JFrame("Threes!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-        frame.getContentPane().add(gui);
+        frame.getContentPane().add(main);
         frame.pack();
         frame.setVisible(true);
     }
