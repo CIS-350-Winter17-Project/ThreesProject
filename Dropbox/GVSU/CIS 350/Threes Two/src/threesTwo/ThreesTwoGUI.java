@@ -56,6 +56,17 @@ public class ThreesTwoGUI extends JPanel {
         }
         
         displayBoard();
+        
+        for (int i=0; i<4; i++) {
+			for (int j=0; j<4; j++) {
+				
+				System.out.print(String.format("%d ", game.getDisplay()[i][j].getValue()));
+				
+			}
+			System.out.println();
+		}
+		
+		System.out.println("\n===================\n");
 
         addKeyListener(new KeyAdapter() {
 
@@ -64,6 +75,18 @@ public class ThreesTwoGUI extends JPanel {
 				// TODO Auto-generated method stub
 				moveEvent(arg0);
 				displayBoard();
+				
+				for (int i=0; i<4; i++) {
+					for (int j=0; j<4; j++) {
+						
+						System.out.print(String.format("%d ", game.getDisplay()[i][j].getValue()));
+						
+					}
+					System.out.println();
+				}
+				
+				System.out.println("\n===================\n");
+				
 			}
 
 			@Override
@@ -102,6 +125,16 @@ public class ThreesTwoGUI extends JPanel {
             	
             	board[row][col].setHorizontalAlignment(SwingConstants.CENTER);
             	board[row][col].setFont(new Font("Calibri", Font.BOLD, 24));
+            	
+            	if (value == 0) {
+            		Color c = new Color(230, 230, 255);
+            		Border b = BorderFactory.createLineBorder(c, 2, true);
+            		
+            		board[row][col].setBackground(c);
+            		board[row][col].setBorder(b);
+            		board[row][col].setText(" ");
+            		
+            	}
             	
             	if (value == 1) {
             		Color c = new Color(102, 102, 255);

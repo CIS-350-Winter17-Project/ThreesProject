@@ -10,18 +10,35 @@ import java.util.Random;
 
 	public class ThreesTwoGame {
 		private Cell[][] board;
+		private Cell[][] tempBoard;
 		private GameStatus status;
 		private int highScore;
 		private int score;
+		private Cell nextPiece = new Cell(false, 1);
+
 		private final String FILENAME = "high_score.txt";
 		private final static int boardSize = 4;
 
+		/* This constructor is for testing only */
+		public ThreesTwoGame(boolean test) {
+			
+			board = new Cell[4][4];
+			
+			for (int row=0; row<4; row++) {
+				for (int col=0; col<4; col++) {
+					board[row][col] = new Cell(true, 0);
+				}
+			}
+		}
+		
 		public ThreesTwoGame() {
+			
 			board = new Cell[boardSize][boardSize];
-			// TODO some code to retrieve the high score from a text file.
-			// change some code. This is a change.
+			tempBoard = new Cell[boardSize][boardSize];
 			
 			setHighScore();
+			
+			resetTempBoard();
 			
 			// create an empty board
 			for (int i=0; i<boardSize; i++) {
@@ -52,334 +69,246 @@ import java.util.Random;
 		}
 
 		public void Move(Direction direction) {
-			if (moveAvailable(direction)) {
-				if (direction == Direction.UP) {
-					for (int row = 1; row < boardSize; row++) {
-						for (int col = 0; col < boardSize; col++) {
-							if (board[row - 1][col].isEmpty()) {
-								board[row - 1][col].setValue(
-										board[row][col].getValue());
-								board[row - 1][col].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row - 1][col]
-									.getValue() == board[row][col]
-											.getValue()
-									&& board[row][col].getValue() != 1
-									|| board[row][col].getValue() != 2) {
-								board[row - 1][col].setValue(
-										board[row - 1][col].getValue() * 2);
-								board[row - 1][col].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row - 1][col].getValue() == 1
-									&& board[row][col].getValue() == 2
-									|| board[row - 1][col].getValue() == 2
-											&& board[row][col]
-													.getValue() == 1) {
-								board[row - 1][col].setValue(3);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-						}
-					}
-					
-					Random rand = new Random();
-					Boolean newCell = false;
-					int number = rand.nextInt(1) + 1;
-					while (!newCell){
-						int up = rand.nextInt(3);
-						if (board[3][up].isEmpty()){
-							board[3][up].setValue(number);
-							newCell = true;
-						}
-					}
-				}
-
-				if (direction == Direction.DOWN) {
-					for (int row = 2; row > -1; row--) {
-						for (int col = 0; col < boardSize; col++) {
-							if (board[row + 1][col].isEmpty()) {
-								board[row + 1][col].setValue(
-										board[row][col].getValue());
-								board[row + 1][col].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row + 1][col]
-									.getValue() == board[row][col]
-											.getValue()
-									&& board[row][col].getValue() != 1
-									|| board[row][col].getValue() != 2) {
-								board[row + 1][col].setValue(
-										board[row + 1][col].getValue() * 2);
-								board[row + 1][col].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row + 1][col].getValue() == 1
-									&& board[row][col].getValue() == 2
-									|| board[row + 1][col].getValue() == 2
-											&& board[row][col]
-													.getValue() == 1) {
-								board[row + 1][col].setValue(3);
-								board[row + 1][col].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-						}
-					}
-					
-					Random rand = new Random();
-					int number = rand.nextInt(1) + 1;
-					Boolean newCell = false;
-					while (!newCell){
-						int down = rand.nextInt(3);
-						if (board[0][down].isEmpty()){
-							board[0][down].setValue(number);
-							newCell = true;
-
-					}
-				}
-			}
-
-				if (direction == Direction.RIGHT) {
-					for (int row = 0; row < boardSize; row++) {
-						for (int col = 2; col > -1; col--) {
-							if (board[row][col + 1].isEmpty()) {
-								board[row][col + 1].setValue(
-										board[row][col].getValue());
-								board[row][col + 1].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row][col + 1]
-									.getValue() == board[row][col]
-											.getValue()
-									&& board[row][col].getValue() != 1
-									|| board[row][col].getValue() != 2) {
-								board[row][col + 1].setValue(
-										board[row][col + 1].getValue() * 2);
-								board[row][col + 1].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row][col + 1].getValue() == 1
-									&& board[row][col].getValue() == 2
-									|| board[row][col + 1].getValue() == 2
-											&& board[row][col]
-													.getValue() == 1) {
-								board[row][col + 1].setValue(3);
-								board[row][col + 1].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-						}
-					}
-					
-					Random rand = new Random();
-					int number = rand.nextInt(1) + 1;
-					Boolean newCell = false;
-					while (!newCell){
-						int right = rand.nextInt(3);
-						if (board[right][0].isEmpty()){
-							board[right][0].setValue(number);
-							newCell = true;
-
-					}
-				}
-			}
-
-				if (direction == Direction.LEFT) {
-					for (int row = 0; row < boardSize; row++) {
-						for (int col = 1; col < boardSize; col++) {
-							if (board[row][col - 1].isEmpty()) {
-								board[row][col - 1].setValue(
-										board[row][col].getValue());
-								board[row][col - 1].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row][col - 1]
-									.getValue() == board[row][col]
-											.getValue()
-									&& board[row][col].getValue() != 1
-									|| board[row][col].getValue() != 2) {
-								board[row][col - 1].setValue(
-										board[row][col].getValue() * 2);
-								board[row][col - 1].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-
-							else if (board[row][col - 1].getValue() == 1
-									&& board[row][col].getValue() == 2
-									|| board[row][col - 1].getValue() == 2
-											&& board[row][col]
-													.getValue() == 1) {
-								board[row][col - 1].setValue(3);
-								board[row][col - 1].setEmpty(false);
-								board[row][col].setValue(0);
-								board[row][col].setEmpty(true);
-							}
-						}
-					}
-					
-					Random rand = new Random();
-					int number = rand.nextInt(1) + 1;
-					Boolean newCell = false;
-					while (!newCell){
-						int left = rand.nextInt(3);
-						if (board[left][0].isEmpty()){
-							board[left][0].setValue(number);
-							newCell = true;
-
-						}
-					}
-				}
-			}
-		}
-
-		private boolean moveAvailable() {
-			for (int row = 0; row < boardSize; row++) {
-				for (int col = 0; col < boardSize; col++) {
-					if (board[row][col].isEmpty()) {
-						return true;
-					}
-				}
-			}
-
-			for (int row = 0; row < boardSize - 1; row++) {
-				for (int col = 0; col < boardSize; col++) {
-					if (board[row][col].getValue() == board[row + 1][col]
-							.getValue() && board[row][col].getValue() != 1
-							|| board[row][col].getValue() != 2)
-						return true;
-
-					else if (board[row][col].getValue() == 1
-							&& board[row + 1][col].getValue() == 2
-							|| board[row][col].getValue() == 2
-									&& board[row + 1][col].getValue() == 1)
-						return true;
-				}
-			}
-
-			for (int row = 0; row < boardSize; row++) {
-				for (int col = 0; col < boardSize - 1; col++) {
-					if (board[row][col].getValue() == board[row][col + 1]
-							.getValue() && board[row][col].getValue() != 1
-							|| board[row][col].getValue() != 2)
-						return true;
-
-					else if (board[row][col].getValue() == 1
-							&& board[row][col + 1].getValue() == 2
-							|| board[row][col].getValue() == 2
-									&& board[row][col + 1].getValue() == 1)
-						return true;
-				}
-			}
-
-			return false;
-		}
-
-		private boolean moveAvailable(final Direction direction) {
+			
 			if (direction == Direction.UP) {
-				for (int row = 1; row < boardSize; row++) {
+				
+				for (int row = 0; row < boardSize; row ++) {
 					for (int col = 0; col < boardSize; col++) {
-						if (board[row][col]
-								.getValue() == board[row - 1][col]
-										.getValue()
-								&& board[row][col].getValue() != 1
-								|| board[row][col].getValue() != 2)
-							return true;
-						else if (board[row - 1][col].isEmpty())
-							return true;
-						else if (board[row - 1][col].getValue() == 1
-								&& board[row][col].getValue() == 2
-								|| board[row - 1][col].getValue() == 2
-										&& board[row][col].getValue() == 1)
-							return true;
+					
+						if (moveAvailable(row, col, Direction.UP)) {
+							
+							int val = board[row][col].getValue() + board[row-1][col].getValue();
+							
+							board[row-1][col].setValue(val);
+							board[row-1][col].setEmpty(false);
+							
+							board[row][col].setValue(0);
+							board[row][col].setEmpty(true);
+							
+						}
+						
+						
 					}
 				}
 			}
-			if (direction == Direction.DOWN) {
-				for (int row = 2; row > -1; row--) {
+					
+			else if (direction == Direction.DOWN) {
+						
+				for (int row = 3; row >= 0; row--) {
 					for (int col = 0; col < boardSize; col++) {
-						if (board[row][col]
-								.getValue() == board[row + 1][col]
-										.getValue()
-								&& board[row][col].getValue() != 1
-								|| board[row][col].getValue() != 2)
-							return true;
-						else if (board[row + 1][col].isEmpty())
-							return true;
-						else if (board[row + 1][col].getValue() == 1
-								&& board[row][col].getValue() == 2
-								|| board[row + 1][col].getValue() == 2
-										&& board[row][col].getValue() == 1)
-							return true;
+						
+						if (moveAvailable(row, col, Direction.DOWN)) {
+							
+							int val = board[row][col].getValue() + board[row+1][col].getValue();
+							
+							board[row+1][col].setValue(val);
+							board[row+1][col].setEmpty(false);
+							
+							board[row][col].setValue(0);
+							board[row][col].setEmpty(true);
+							
+						}
+						
 					}
 				}
 			}
-
-			if (direction == Direction.RIGHT) {
+			
+			// this works correctly
+			else if (direction == Direction.LEFT) {
+				
 				for (int row = 0; row < boardSize; row++) {
-					for (int col = 2; col > 0; col--) {
-						if (board[row][col]
-								.getValue() == board[row][col + 1]
-										.getValue()
-								&& board[row][col].getValue() != 1
-								|| board[row][col].getValue() != 2)
-							return true;
-
-						else if (board[row][col + 1].isEmpty())
-							return true;
-
-						else if (board[row][col + 1].getValue() == 1
-								&& board[row][col].getValue() == 2
-								|| board[row][col + 1].getValue() == 2
-										&& board[row][col].getValue() == 1)
-							return true;
+					for (int col = 0; col < boardSize; col++) {
+						
+						if (moveAvailable(row, col, Direction.LEFT)) {
+							
+							int val = board[row][col].getValue() + board[row][col-1].getValue();
+							
+							board[row][col-1].setValue(val);
+							board[row][col-1].setEmpty(false);
+							
+							board[row][col].setValue(0);
+							board[row][col].setEmpty(true);
+							
+						}
+						
 					}
 				}
 			}
-			if (direction == Direction.LEFT) {
+			
+			else if (direction == Direction.RIGHT) {
+				
 				for (int row = 0; row < boardSize; row++) {
-					for (int col = 1; col < boardSize; col++) {
-						if (board[row][col]
-								.getValue() == board[row][col - 1]
-										.getValue()
-								&& board[row][col].getValue() != 1
-								|| board[row][col].getValue() != 2)
-							return true;
-
-						else if (board[row][col - 1].isEmpty())
-							return true;
-
-						else if (board[row][col - 1].getValue() == 1
-								&& board[row][col - 1].getValue() == 2
-								|| board[row][col - 1].getValue() == 2
-										&& board[row][col - 1]
-												.getValue() == 1)
-							return true;
+					for (int col = 3; col >= 0; col--) {
+						
+						if (moveAvailable(row, col, Direction.RIGHT)) {
+							
+							int val = board[row][col].getValue() + board[row][col+1].getValue();
+							
+							board[row][col+1].setValue(val);
+							board[row][col+1].setEmpty(false);
+							
+							board[row][col].setValue(0);
+							board[row][col].setEmpty(true);
+							
+						}
+						
 					}
 				}
 			}
-			return false;
+					
+					
 		}
+			
+		// change back to private visibility
+		private boolean moveAvailable(int row, int col, final Direction direction) {
+			
+			if (direction == Direction.UP) {
+					
+					if (row == 0) return false;
+						
+					if (board[row][col].getValue() == 1) {
+						
+						if (board[row-1][col].getValue() == 2
+								|| board[row-1][col].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					}
+					
+					if (board[row][col].getValue() == 2) {
+						
+						if (board[row-1][col].getValue() == 1
+								|| board[row-1][col].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					} 
+					
+					if (board[row][col].getValue() >= 3){
+						
+						if (board[row-1][col].isEmpty() ||
+								board[row][col].getValue() == board[row-1][col].getValue())
+							return true;
+						return false;
+						
+					}
+				}
+			
+				if (direction == Direction.DOWN) {
+					
+					if (row == 3) return false;
+					
+					if (board[row][col].getValue() == 1) {
+						
+						if (board[row+1][col].getValue() == 2
+								|| board[row+1][col].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					} 
+					
+					if (board[row][col].getValue() == 2) {
+						
+						if (board[row+1][col].getValue() == 1
+								|| board[row+1][col].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					} 
+					
+					if (board[row][col].getValue() >= 3){
+						
+						if (board[row+1][col].isEmpty() ||
+								board[row][col].getValue() == board[row+1][col].getValue())
+							return true;
+						
+						return false;
+						
+					}
+					
+				}
+				
+				if (direction == Direction.LEFT) {
+					
+					if (col == 0) return false;
+					
+					if (board[row][col].getValue() == 1) {
+						
+						if (board[row][col-1].getValue() == 2
+								|| board[row][col-1].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					} 
+					
+					if (board[row][col].getValue() == 2) {
+						
+						if (board[row][col-1].getValue() == 1
+								|| board[row][col-1].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					} 
+					
+					if (board[row][col].getValue() >= 3){
+						
+						if (board[row][col-1].isEmpty() ||
+								board[row][col].getValue() == board[row][col-1].getValue())
+							return true;
+						
+						return false;
+						
+					}
+					
+				}
+				
+				if (direction == Direction.RIGHT) {
+					
+					if (col == 3) return false;
+					
+					if (board[row][col].getValue() == 1) {
+						
+						if (board[row][col+1].getValue() == 2
+								|| board[row][col+1].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					} 
+					
+					if (board[row][col].getValue() == 2) {
+						
+						if (board[row][col+1].getValue() == 1
+								|| board[row][col+1].isEmpty()) 
+							return true;
+						
+						return false;
+						
+					} 
+					
+					if (board[row][col].getValue() >= 3){
+						
+						if (board[row][col+1].isEmpty() ||
+								board[row][col].getValue() == board[row][col+1].getValue())
+							return true;
+						
+						return false;
+						
+					}
+					
+				}
+				return false;
+			}
+			
+			
 		
 		private void setHighScore() {
-			
-			//System.out.println("setHighScore");
 			
 			Path file = FileSystems.getDefault().getPath(FILENAME);
 			
@@ -389,8 +318,8 @@ import java.util.Random;
 	            highScore = Integer.parseInt(reader.readLine());
 
 	        } catch (IOException e) {
+	        	
 	            // File does not exist, so high score is zero
-	        	//System.err.format("IOException: %s%n", e);
 	        	highScore = 0;
 	        }
 
@@ -400,16 +329,12 @@ import java.util.Random;
 			
 			
 			Path file = FileSystems.getDefault().getPath(FILENAME);
-				
-			//System.out.println("saveHighScore");
 			
 			String str = Integer.toString(newScore);
 
 			try (BufferedWriter writer = Files.newBufferedWriter(file)) {
 					
 				writer.write(str);
-				
-				//System.out.println("saved");
 					
 			} catch (IOException e) {
 					
@@ -421,6 +346,37 @@ import java.util.Random;
 		
 		public Cell[][] getDisplay(){
 			return board;
+		}
+		
+		/* This method is for testing */
+		public void setCells(int row, int col, Cell cell) {
+			board[row][col] = cell;
+		}
+		
+		// later
+		public Cell getNextPiece() {
+			return nextPiece;
+		}
+		
+		
+		
+		/* these next two methods may not be needed */
+		
+		private void resetTempBoard() {
+			
+			for (int row = 0; row < boardSize; row++) 
+				for (int col = 0; col < boardSize; col++)
+					
+						tempBoard[row][col] = new Cell(true, 0);
+		}
+		
+		private void setNewBoard() {
+			
+			for (int row = 0; row < boardSize; row++) 
+				for (int col = 0; col < boardSize; col++) 
+					
+					board[row][col] = tempBoard[row][col];
+				
 		}
 		
 
