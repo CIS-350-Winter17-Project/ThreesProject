@@ -86,6 +86,16 @@ public class ThreesTwoGUI extends JPanel {
 				}
 				
 				System.out.println("\n===================\n");
+				if(game.getGameStatus()==GameStatus.GAME_OVER){
+					JOptionPane.showMessageDialog(null, "Game Over");
+					game.resetMain();
+					displayBoard();
+					//for(int row = 0; row < 4; row++){
+						//for(int col = 0; col < 4; col++){
+							//board[row][col].setText(Integer.toString(gameBoard[row][col].getValue()));
+						//}
+					//}
+				}
 				
 			}
 

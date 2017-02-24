@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Random;
 
 	public class ThreesTwoGame {
@@ -40,38 +41,17 @@ import java.util.Random;
 			
 			resetTempBoard();
 			
-			// create an empty board
-			for (int i=0; i<boardSize; i++) {
-				for (int j=0; j<boardSize; j++) {
-					board[i][j] = new Cell(true, 0);
-				}
-			}
+			resetMain();
 			
-			// Start the game with 9 cells
-			int startingCells = 0;
-			Random rand = new Random();
 			
-			while (startingCells < 9) {
-				int row = rand.nextInt(boardSize);
-				int col = rand.nextInt(boardSize);
-				
-				int val = rand.nextInt(3) + 1;
-				
-				if (board[row][col].isEmpty()) {
-					board[row][col] = new Cell(false, val);
-					startingCells++;
-				}
-				
-			}
-			
-			status = GameStatus.IN_PROGRESS;
 				
 		}
 
 		public void Move(Direction direction) {
-			
+			Random rand = new Random();
+			boolean mover = false;
 			if (direction == Direction.UP) {
-				
+				mover = false;
 				for (int row = 0; row < boardSize; row ++) {
 					for (int col = 0; col < boardSize; col++) {
 					
@@ -84,16 +64,25 @@ import java.util.Random;
 							
 							board[row][col].setValue(0);
 							board[row][col].setEmpty(true);
-							
+							mover = true;
 						}
-						
-						
+							
 					}
+					
 				}
+				if(mover==true){
+					int chooseSpot = rand.nextInt(4);
+					while(!board[3][chooseSpot].isEmpty()){
+						chooseSpot = rand.nextInt(4);
+				}
+					board[3][chooseSpot].setValue(rand.nextInt(3)+1);
+					board[3][chooseSpot].setEmpty(false);
+				}
+			
 			}
 					
 			else if (direction == Direction.DOWN) {
-						
+				mover = false;		
 				for (int row = 3; row >= 0; row--) {
 					for (int col = 0; col < boardSize; col++) {
 						
@@ -107,15 +96,25 @@ import java.util.Random;
 							board[row][col].setValue(0);
 							board[row][col].setEmpty(true);
 							
+							mover = true;
 						}
 						
 					}
 				}
+				if(mover==true){
+					int chooseSpot = rand.nextInt(4);
+					while(!board[0][chooseSpot].isEmpty()){
+						chooseSpot = rand.nextInt(4);
+					}
+					board[0][chooseSpot].setValue(rand.nextInt(3)+1);
+					board[0][chooseSpot].setEmpty(false);
+				}
+			
 			}
 			
 			// this works correctly
 			else if (direction == Direction.LEFT) {
-				
+				mover = false;
 				for (int row = 0; row < boardSize; row++) {
 					for (int col = 0; col < boardSize; col++) {
 						
@@ -129,14 +128,24 @@ import java.util.Random;
 							board[row][col].setValue(0);
 							board[row][col].setEmpty(true);
 							
+							mover = true;
 						}
 						
 					}
 				}
+				if(mover==true){
+					int chooseSpot = rand.nextInt(4);
+					while(!board[chooseSpot][3].isEmpty()){
+						chooseSpot = rand.nextInt(4);
+					}
+					board[chooseSpot][3].setValue(rand.nextInt(3)+1);
+					board[chooseSpot][3].setEmpty(false);
+				}
+				
 			}
 			
 			else if (direction == Direction.RIGHT) {
-				
+				mover = false;
 				for (int row = 0; row < boardSize; row++) {
 					for (int col = 3; col >= 0; col--) {
 						
@@ -150,10 +159,20 @@ import java.util.Random;
 							board[row][col].setValue(0);
 							board[row][col].setEmpty(true);
 							
+							mover = true;
 						}
 						
 					}
 				}
+				if(mover==true){
+					int chooseSpot = rand.nextInt(4);
+					while(!board[chooseSpot][0].isEmpty()){
+						chooseSpot = rand.nextInt(4);
+					}
+					board[chooseSpot][0].setValue(rand.nextInt(3)+1);
+					board[chooseSpot][0].setEmpty(false);
+				}
+				
 			}
 					
 					
@@ -305,6 +324,32 @@ import java.util.Random;
 				}
 				return false;
 			}
+		public GameStatus getGameStatus(){
+			boolean stat=true;
+			outerloop:
+			for (int row = 0; row < 4; row++){
+				for(int col = 0; col < 4; col++){
+					if(((!moveAvailable(row, col, Direction.UP))&&
+							(!moveAvailable(row, col, Direction.DOWN))&&
+							(!moveAvailable(row, col, Direction.LEFT))&&
+							(!moveAvailable(row, col, Direction.RIGHT)))){
+						stat = false;
+					}
+					else{
+						stat = true;
+						break outerloop;
+					}
+					
+				}
+				
+			}
+			if(stat==false){
+				status = GameStatus.GAME_OVER;
+				System.out.println("Game Over");
+				
+			}
+			return status;
+		}
 			
 			
 		
@@ -377,6 +422,34 @@ import java.util.Random;
 					
 					board[row][col] = tempBoard[row][col];
 				
+		}
+		
+		public void resetMain(){
+			// create an empty board
+						for (int i=0; i<boardSize; i++) {
+							for (int j=0; j<boardSize; j++) {
+								board[i][j] = new Cell(true, 0);
+							}
+						}
+						
+						// Start the game with 9 cells
+						int startingCells = 0;
+						Random rand = new Random();
+						
+						while (startingCells < 9) {
+							int row = rand.nextInt(boardSize);
+							int col = rand.nextInt(boardSize);
+							
+							int val = rand.nextInt(3) + 1;
+							
+							if (board[row][col].isEmpty()) {
+								board[row][col] = new Cell(false, val);
+								startingCells++;
+							}
+							
+						}
+						
+						status = GameStatus.IN_PROGRESS;
 		}
 		
 
