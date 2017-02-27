@@ -22,6 +22,7 @@ public class ThreesTwoGUI extends JPanel {
         requestFocusInWindow();
         
         setBackground(Color.WHITE);
+        setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
     	
         // has the board
         game = new ThreesTwoGame();
@@ -220,16 +221,21 @@ public class ThreesTwoGUI extends JPanel {
     	east.setBackground(Color.WHITE);
     	
     	// side panel top
-    	JPanel nextPanel = new JPanel(new GridLayout(3, 1, 5, 5));
+    	JPanel nextPanel = new JPanel(new BorderLayout(5, 5));
     	JLabel next = new JLabel("Next");
+    	JPanel nextWest = new JPanel();
+    	JPanel nextSouth = new JPanel();
+    	JPanel nextEast = new JPanel();
     	
     	west.setPreferredSize(new Dimension(75, 280));
-    	nextPanel.add(next);
-    	nextPanel.add(nextCell);
+    	west.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
+    	nextPanel.add(next, BorderLayout.NORTH);
+    	nextPanel.add(nextCell, BorderLayout.CENTER);
+    	nextPanel.add(nextWest, BorderLayout.WEST);
+    	nextPanel.add(nextSouth, BorderLayout.SOUTH);
+    	nextPanel.add(nextEast, BorderLayout.EAST);
     	
-//    	JLabel label = new JLabel();
-
-//    	
+    	
     	west.add(nextPanel);
     	
     	main.add(top, BorderLayout.NORTH);
