@@ -8,12 +8,13 @@ import javax.swing.border.Border;
 
 public class ThreesTwoGUI extends JPanel {
 
-	private ThreesTwoGame game;
+	private static ThreesTwoGame game;
     private JLabel[][] board;
     private Cell[][] gameBoard;
+    private static JLabel nextCell;
+    private static JButton restart;
 
     private int BOARD_SIZE = 4;
-    private int range[] = {0, 1, 2, 3};
 
     public ThreesTwoGUI () {
     	
@@ -34,9 +35,8 @@ public class ThreesTwoGUI extends JPanel {
         // for the numbers
         Dimension d = new Dimension(48, 68);
         
-
-        for (int row: range) {
-            for (int col: range ) {
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
             	
             	Color c = new Color(230, 230, 255);
             	Border b = BorderFactory.createLineBorder(c, 2, true);
@@ -55,19 +55,22 @@ public class ThreesTwoGUI extends JPanel {
             }
         }
         
+        // preview piece
+        nextCell = new JLabel();
+        nextCell.setPreferredSize(d);
+        nextCell.setOpaque(true);
+        
+        // restart button
+    	restart = new JButton("DON'T");
+    	
+    	restart.addActionListener( e -> { 
+    		
+    		game.resetMain();
+    	
+    	});
+      
         displayBoard();
         
-        for (int i=0; i<4; i++) {
-			for (int j=0; j<4; j++) {
-				
-				System.out.print(String.format("%d ", game.getDisplay()[i][j].getValue()));
-				
-			}
-			System.out.println();
-		}
-		
-		System.out.println("\n===================\n");
-
         addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -75,26 +78,13 @@ public class ThreesTwoGUI extends JPanel {
 				// TODO Auto-generated method stub
 				moveEvent(arg0);
 				displayBoard();
-				
-				for (int i=0; i<4; i++) {
-					for (int j=0; j<4; j++) {
-						
-						System.out.print(String.format("%d ", game.getDisplay()[i][j].getValue()));
-						
-					}
-					System.out.println();
-				}
-				
-				System.out.println("\n===================\n");
+
 				if(game.getGameStatus()==GameStatus.GAME_OVER){
+					
 					JOptionPane.showMessageDialog(null, "Game Over");
 					game.resetMain();
 					displayBoard();
-					//for(int row = 0; row < 4; row++){
-						//for(int col = 0; col < 4; col++){
-							//board[row][col].setText(Integer.toString(gameBoard[row][col].getValue()));
-						//}
-					//}
+					
 				}
 				
 			}
@@ -127,6 +117,36 @@ public class ThreesTwoGUI extends JPanel {
     }
 
     private void displayBoard() {
+    	
+    	int nextValue = game.getNextCell().getValue();
+    	
+    	nextCell.setHorizontalAlignment(SwingConstants.CENTER);
+    	nextCell.setFont(new Font("Calibri", Font.BOLD, 24));
+    	nextCell.setText(" ");
+    	
+    	if (nextValue == 1) {
+    		Color c = new Color(102, 102, 255);
+    		Border b = BorderFactory.createLineBorder(c, 2, true);
+    		
+    		nextCell.setBackground(c);
+    		nextCell.setBorder(b);
+    	}
+    	
+    	if (nextValue == 2) {
+    		Color c = new Color(255, 0, 102);
+    		Border b = BorderFactory.createLineBorder(c, 2, true);
+    		
+    		nextCell.setBorder(b);
+    		nextCell.setBackground(c);
+    	}
+    	
+    	if (nextValue >= 3) {
+    		Border b = BorderFactory.createLineBorder(Color.WHITE, 2, true);
+    		
+    		nextCell.setBackground(Color.WHITE);
+    		
+    		nextCell.setBorder(b);
+    	}
 
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
@@ -152,6 +172,7 @@ public class ThreesTwoGUI extends JPanel {
             		
             		board[row][col].setText(Integer.toString(value));
             		board[row][col].setBackground(c);
+            		board[row][col].setForeground(Color.WHITE);
             		board[row][col].setBorder(b);
             		
             	}
@@ -163,6 +184,7 @@ public class ThreesTwoGUI extends JPanel {
             		board[row][col].setText(Integer.toString(value));
             		board[row][col].setBorder(b);
             		board[row][col].setBackground(c);
+            		board[row][col].setForeground(Color.WHITE);
             		
             	}
             	else if (value >= 3) {
@@ -185,10 +207,11 @@ public class ThreesTwoGUI extends JPanel {
     	
     	ThreesTwoGUI gui = new ThreesTwoGUI();
     	
-    	JPanel main = new JPanel(new BorderLayout());
+    	JPanel main = new JPanel(new BorderLayout(5, 5));
+    	main.setBackground(Color.WHITE);
     	JPanel top = new JPanel();
     	JPanel bottom = new JPanel();
-    	JPanel west = new JPanel();
+    	JPanel west = new JPanel(new GridLayout(3, 1, 5, 5));
     	JPanel east = new JPanel();
     	
     	top.setBackground(Color.WHITE);
@@ -196,13 +219,18 @@ public class ThreesTwoGUI extends JPanel {
     	west.setBackground(Color.WHITE);
     	east.setBackground(Color.WHITE);
     	
-//    	Dimension t = new Dimension(200, 90);
-//    	Dimension s = new Dimension(40, 336);
+    	// side panel top
+    	JPanel nextPanel = new JPanel(new GridLayout(3, 1, 5, 5));
+    	JLabel next = new JLabel("Next");
+    	
+    	west.setPreferredSize(new Dimension(75, 280));
+    	nextPanel.add(next);
+    	nextPanel.add(nextCell);
+    	
+//    	JLabel label = new JLabel();
+
 //    	
-//    	top.setPreferredSize(t);
-//    	bottom.setPreferredSize(t);
-//    	west.setPreferredSize(s);
-//    	east.setPreferredSize(s);
+    	west.add(nextPanel);
     	
     	main.add(top, BorderLayout.NORTH);
     	main.add(west, BorderLayout.WEST);

@@ -6,16 +6,16 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Random;
 
 	public class ThreesTwoGame {
 		private Cell[][] board;
-		private Cell[][] tempBoard;
 		private GameStatus status;
+		
 		private int highScore;
 		private int score;
-		private Cell nextPiece = new Cell(false, 1);
+		
+		private Cell nextCell;
 
 		private final String FILENAME = "high_score.txt";
 		private final static int boardSize = 4;
@@ -35,12 +35,11 @@ import java.util.Random;
 		public ThreesTwoGame() {
 			
 			board = new Cell[boardSize][boardSize];
-			tempBoard = new Cell[boardSize][boardSize];
+			
+			createNextCell();
 			
 			setHighScore();
-			
-			resetTempBoard();
-			
+						
 			resetMain();
 			
 			
@@ -71,12 +70,13 @@ import java.util.Random;
 					
 				}
 				if(mover==true){
+					
 					int chooseSpot = rand.nextInt(4);
 					while(!board[3][chooseSpot].isEmpty()){
 						chooseSpot = rand.nextInt(4);
 				}
-					board[3][chooseSpot].setValue(rand.nextInt(3)+1);
-					board[3][chooseSpot].setEmpty(false);
+					board[3][chooseSpot] = nextCell;
+					createNextCell();
 				}
 			
 			}
@@ -106,8 +106,8 @@ import java.util.Random;
 					while(!board[0][chooseSpot].isEmpty()){
 						chooseSpot = rand.nextInt(4);
 					}
-					board[0][chooseSpot].setValue(rand.nextInt(3)+1);
-					board[0][chooseSpot].setEmpty(false);
+					board[0][chooseSpot] = nextCell;
+					createNextCell();
 				}
 			
 			}
@@ -138,8 +138,8 @@ import java.util.Random;
 					while(!board[chooseSpot][3].isEmpty()){
 						chooseSpot = rand.nextInt(4);
 					}
-					board[chooseSpot][3].setValue(rand.nextInt(3)+1);
-					board[chooseSpot][3].setEmpty(false);
+					board[chooseSpot][3] = nextCell;
+					createNextCell();
 				}
 				
 			}
@@ -169,8 +169,8 @@ import java.util.Random;
 					while(!board[chooseSpot][0].isEmpty()){
 						chooseSpot = rand.nextInt(4);
 					}
-					board[chooseSpot][0].setValue(rand.nextInt(3)+1);
-					board[chooseSpot][0].setEmpty(false);
+					board[chooseSpot][0] = nextCell;
+					createNextCell();
 				}
 				
 			}
@@ -324,6 +324,7 @@ import java.util.Random;
 				}
 				return false;
 			}
+		
 		public GameStatus getGameStatus(){
 			boolean stat=true;
 			outerloop:
@@ -398,30 +399,14 @@ import java.util.Random;
 			board[row][col] = cell;
 		}
 		
+		
+		private void createNextCell() {
+			nextCell = new Cell(false, new Random().nextInt(3) + 1);
+		}
+		
 		// later
-		public Cell getNextPiece() {
-			return nextPiece;
-		}
-		
-		
-		
-		/* these next two methods may not be needed */
-		
-		private void resetTempBoard() {
-			
-			for (int row = 0; row < boardSize; row++) 
-				for (int col = 0; col < boardSize; col++)
-					
-						tempBoard[row][col] = new Cell(true, 0);
-		}
-		
-		private void setNewBoard() {
-			
-			for (int row = 0; row < boardSize; row++) 
-				for (int col = 0; col < boardSize; col++) 
-					
-					board[row][col] = tempBoard[row][col];
-				
+		public Cell getNextCell() {
+			return nextCell;
 		}
 		
 		public void resetMain(){
