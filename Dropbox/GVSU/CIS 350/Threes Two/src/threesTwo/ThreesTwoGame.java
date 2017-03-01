@@ -77,6 +77,7 @@ import java.util.Random;
 				}
 					board[3][chooseSpot] = nextCell;
 					createNextCell();
+					score();
 				}
 			
 			}
@@ -108,6 +109,7 @@ import java.util.Random;
 					}
 					board[0][chooseSpot] = nextCell;
 					createNextCell();
+					score();
 				}
 			
 			}
@@ -140,6 +142,7 @@ import java.util.Random;
 					}
 					board[chooseSpot][3] = nextCell;
 					createNextCell();
+					score();
 				}
 				
 			}
@@ -171,6 +174,7 @@ import java.util.Random;
 					}
 					board[chooseSpot][0] = nextCell;
 					createNextCell();
+					score();
 				}
 				
 			}
@@ -347,14 +351,49 @@ import java.util.Random;
 			if(stat==false){
 				status = GameStatus.GAME_OVER;
 				System.out.println("Game Over");
-				
+				score();
+				saveHighScore(setHighScore());
 			}
 			return status;
 		}
 			
 			
 		
-		private void setHighScore() {
+		public int score(){
+			score = 0;
+			for(int row = 0; row < 4; row++){
+				for(int col = 0; col < 4; col++){
+					score = score + board[row][col].getValue();
+				}
+			}
+			return score;
+		}
+		
+		public int getScore(){
+			return score;
+		}
+		
+		public int getHighScore(){
+			return highScore;
+		}
+			
+		 int readHighScore(){
+			Path file = FileSystems.getDefault().getPath(FILENAME);
+			
+	        
+	        try (BufferedReader reader = Files.newBufferedReader(file)) {
+	        	
+	            highScore = Integer.parseInt(reader.readLine());
+
+	        } catch (IOException e) {
+	        	
+	            // File does not exist, so high score is zero
+	        	highScore = 0;
+	        }
+	        return highScore;
+		}	
+		
+		private int setHighScore() {
 			
 			Path file = FileSystems.getDefault().getPath(FILENAME);
 			
@@ -368,15 +407,19 @@ import java.util.Random;
 	            // File does not exist, so high score is zero
 	        	highScore = 0;
 	        }
+	        if(score>highScore){
+	        	highScore = score;
+	        }
+	        return highScore;
 
 	    }
 		
-		private void saveHighScore(int newScore) {
+		public void saveHighScore(int newScore) {
 			
 			
 			Path file = FileSystems.getDefault().getPath(FILENAME);
 			
-			String str = Integer.toString(newScore);
+			String str = Integer.toString(highScore);
 
 			try (BufferedWriter writer = Files.newBufferedWriter(file)) {
 					
@@ -435,6 +478,7 @@ import java.util.Random;
 						}
 						
 						status = GameStatus.IN_PROGRESS;
+						score = 0;
 		}
 		
 

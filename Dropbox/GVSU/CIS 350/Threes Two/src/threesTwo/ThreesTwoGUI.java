@@ -13,6 +13,8 @@ public class ThreesTwoGUI extends JPanel {
     private Cell[][] gameBoard;
     private static JLabel nextCell;
     private static JButton restart;
+    private static JLabel cScore;
+    private static JLabel hScore;
 
     private int BOARD_SIZE = 4;
 
@@ -61,6 +63,12 @@ public class ThreesTwoGUI extends JPanel {
         nextCell.setPreferredSize(d);
         nextCell.setOpaque(true);
         
+        //get score
+        cScore = new JLabel();
+        
+        //get high score
+        hScore = new JLabel();
+        
         // restart button
     	restart = new JButton("DON'T");
     	
@@ -82,7 +90,7 @@ public class ThreesTwoGUI extends JPanel {
 
 				if(game.getGameStatus()==GameStatus.GAME_OVER){
 					
-					JOptionPane.showMessageDialog(null, "Game Over");
+					JOptionPane.showMessageDialog(null, "Game Over: Your score was "+game.getScore()+"!");
 					game.resetMain();
 					displayBoard();
 					
@@ -119,7 +127,14 @@ public class ThreesTwoGUI extends JPanel {
 
     private void displayBoard() {
     	
+    	int score = game.getScore();
+    	int highScore = game.getHighScore();
     	int nextValue = game.getNextCell().getValue();
+    	
+    	
+    	cScore.setText("Score: "+Integer.toString(score));
+    	hScore.setText("High Score: "+Integer.toString(highScore));
+    	
     	
     	nextCell.setHorizontalAlignment(SwingConstants.CENTER);
     	nextCell.setFont(new Font("Calibri", Font.BOLD, 24));
@@ -222,6 +237,7 @@ public class ThreesTwoGUI extends JPanel {
     	
     	// side panel top
     	JPanel nextPanel = new JPanel(new BorderLayout(5, 5));
+    	JPanel scorePanel = new JPanel(new BorderLayout(5,5));
     	JLabel next = new JLabel("Next");
     	JPanel nextWest = new JPanel();
     	JPanel nextSouth = new JPanel();
@@ -229,6 +245,10 @@ public class ThreesTwoGUI extends JPanel {
     	
     	west.setPreferredSize(new Dimension(75, 280));
     	west.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
+    	
+    	scorePanel.add(hScore, BorderLayout.NORTH);;
+    	scorePanel.add(cScore, BorderLayout.SOUTH);
+    	
     	nextPanel.add(next, BorderLayout.NORTH);
     	nextPanel.add(nextCell, BorderLayout.CENTER);
     	nextPanel.add(nextWest, BorderLayout.WEST);
@@ -238,6 +258,7 @@ public class ThreesTwoGUI extends JPanel {
     	
     	west.add(nextPanel);
     	
+    	top.add(scorePanel);
     	main.add(top, BorderLayout.NORTH);
     	main.add(west, BorderLayout.WEST);
     	main.add(gui, BorderLayout.CENTER);
