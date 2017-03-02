@@ -8,19 +8,45 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
 
+	/**********************************************************************
+	* This is the logic of the game. When the GUI receives direct input, 
+	* this is what tells each cell how far to move, where to move, and 
+	* whether or not to combine. 
+	* 
+	* @author Anthony Blanton
+	* @author Scott Lumsden
+	* @author Dylan Shoup
+	* 
+	*@version 0.1 March 3, 2017
+	*********************************************************************/
 	public class ThreesTwoGame {
+		
+		/** The board of Cells, each containing an int and boolean value */
 		private Cell[][] board;
+		
+		/** Tells the game, whether it is over or not */
 		private GameStatus status;
 		
+		/** The highest score the player has ever achieved */
 		private int highScore;
+		
+		/** The current score the player has on this specific game */
 		private int score;
 		
+		/** The next Cell that will enter onto the board after a move */
 		private Cell nextCell;
 
+		/** The file that is created to preserve the high score */
 		private final String FILENAME = "high_score.txt";
+		
+		/** The size of the board. Set to stay at 4 */
 		private final static int boardSize = 4;
 
-		/* This constructor is for testing only */
+		/******************************************************************
+	 	* This is a test constructor. 
+	 	* @param test used to differentiate between this and the real 
+	 	* constructor. 
+	 	*****************************************************************/
 		public ThreesTwoGame(boolean test) {
 			
 			board = new Cell[4][4];
@@ -32,6 +58,10 @@ import java.util.Random;
 			}
 		}
 		
+		/******************************************************************
+	 	* Constructor used to make the 2D Array of Cells and set the
+	 	* initial state of the board.
+	 	*****************************************************************/
 		public ThreesTwoGame() {
 			
 			board = new Cell[boardSize][boardSize];
@@ -46,6 +76,11 @@ import java.util.Random;
 				
 		}
 
+		/******************************************************************
+	 	* This method is what moves the Cells of the board, whatever
+		* direction the player inputs.
+	 	* @param direction
+	 	*****************************************************************/
 		public void Move(Direction direction) {
 			Random rand = new Random();
 			boolean mover = false;
@@ -182,7 +217,16 @@ import java.util.Random;
 					
 		}
 			
-		// change back to private visibility
+		/******************************************************************
+	 	* Checks whether or not a move for a specific cell is possible.
+	 	* If it is, then the move is allowed in the Move method. If not,
+	 	* then the piece remains where it is.
+	 	* 
+	 	* @param row The row of the specific cell you are testing
+	 	* @param col The column of the specific cell you are testing
+	 	* @param direction The direction the player is inputting
+	 	* @return whether or not a move is available for that cell
+	 	*****************************************************************/
 		private boolean moveAvailable(int row, int col, final Direction direction) {
 			
 			if (direction == Direction.UP) {
@@ -329,6 +373,13 @@ import java.util.Random;
 				return false;
 			}
 		
+		/******************************************************************
+	 	* Returns whether or not there is another move available. If there
+	 	* is not, then the game is over and displays the appropriate 
+	 	* message. 
+	 	* @return The appropriate game status, depending on whether or not
+	 	* there are moves available. 
+	 	*****************************************************************/
 		public GameStatus getGameStatus(){
 			boolean stat=true;
 			outerloop:
@@ -358,7 +409,11 @@ import java.util.Random;
 		}
 			
 			
-		
+		/******************************************************************
+		* Determines the player's score by adding all of the int values 
+	 	* contained in each cell. 
+	 	* @return the score of that specific round of Threes. 
+	 	*****************************************************************/
 		public int score(){
 			score = 0;
 			for(int row = 0; row < 4; row++){
@@ -369,15 +424,28 @@ import java.util.Random;
 			return score;
 		}
 		
+		/******************************************************************
+	 	* Returns the current score of the game that is being played. 
+	 	* @return the score of the game. 
+		*****************************************************************/
 		public int getScore(){
 			return score;
 		}
 		
+		/******************************************************************
+	 	* Returns the highest score the player has ever achieved. 
+	 	* @return the highest score the player has ever achieved.
+	 	*****************************************************************/
 		public int getHighScore(){
 			return highScore;
 		}
-			
-		 int readHighScore(){
+		
+		/******************************************************************
+	 	* Reads the high score off of the text file that was previously 
+	 	* created.
+	 	* @return the highest score made on that system. 
+	 	*****************************************************************/
+		public int readHighScore(){
 			Path file = FileSystems.getDefault().getPath(FILENAME);
 			
 	        
@@ -393,6 +461,11 @@ import java.util.Random;
 	        return highScore;
 		}	
 		
+		/******************************************************************
+	 	* Sets the high score, if the current score is higher than the 
+	 	* previous high score. 
+	 	* @return the integer of the high score. 
+	 	*****************************************************************/
 		private int setHighScore() {
 			
 			Path file = FileSystems.getDefault().getPath(FILENAME);
@@ -414,6 +487,11 @@ import java.util.Random;
 
 	    }
 		
+		/******************************************************************
+	 	* Saves the high score once the game has ended, or the player has
+	 	* quit out of the game. 
+	 	* @param newScore the score the player has achieved
+	 	*****************************************************************/
 		public void saveHighScore(int newScore) {
 			
 			
@@ -433,25 +511,46 @@ import java.util.Random;
 			
 		}
 		
+		/******************************************************************
+	 	* Returns the board as it is, used in conjunction with the GUI.
+	 	* @return the board of 2D array of Cells. 
+	 	*****************************************************************/
 		public Cell[][] getDisplay(){
 			return board;
 		}
 		
-		/* This method is for testing */
+		/******************************************************************
+	 	* This method is for testing. It allows us to test whether each
+	 	* Cell is appropriately set. 
+	 	* @param row The row position of this particular Cell.
+	 	* @param col The column position of this particular Cell.
+	 	* @param cell The cell state you are setting the Cell to. 
+	 	*****************************************************************/
 		public void setCells(int row, int col, Cell cell) {
 			board[row][col] = cell;
 		}
 		
-		
+		/******************************************************************
+	 	* A private helper method which creates the next Cell that will
+	 	* be added to the board.
+	 	*****************************************************************/
 		private void createNextCell() {
 			nextCell = new Cell(false, new Random().nextInt(3) + 1);
 		}
 		
-		// later
+		/******************************************************************
+	 	* Returns the next cell that has been created and will be added to
+	 	* the board, once the player inputs something.
+	 	* @return the next cell. 
+	 	*****************************************************************/
 		public Cell getNextCell() {
 			return nextCell;
 		}
 		
+		/******************************************************************
+	 	* Resets the board back to a new state, and resets the Game status
+	 	* and the current score. 
+	 	*****************************************************************/
 		public void resetMain(){
 			// create an empty board
 						for (int i=0; i<boardSize; i++) {
