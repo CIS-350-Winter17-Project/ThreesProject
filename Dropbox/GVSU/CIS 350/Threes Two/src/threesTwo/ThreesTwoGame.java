@@ -46,6 +46,12 @@ public class ThreesTwoGame {
     /** The size of the board. Set to stay at 4 */
     private final int boardSize = 4;
 
+    /** Strictly for checkstyle. */
+    private final int three = 3;
+
+    /** Strictly for checkstyle. */
+    private final int nine = 9;
+
     /*************************************************************
      * This is a test constructor.
      * @param test used to differentiate between this and the real
@@ -53,10 +59,10 @@ public class ThreesTwoGame {
      **************************************************************/
     public ThreesTwoGame(final boolean test) {
 
-        board = new Cell[4][4];
+        board = new Cell[boardSize][boardSize];
 
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 4; col++) {
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
                 board[row][col] = new Cell(true, 0);
             }
         }
@@ -114,19 +120,19 @@ public class ThreesTwoGame {
 
             if (mover) {
 
-                int chooseSpot = rand.nextInt(4);
-                while (!board[3][chooseSpot]
+                int chooseSpot = rand.nextInt(boardSize);
+                while (!board[three][chooseSpot]
                         .isEmpty()) {
-                    chooseSpot = rand.nextInt(4);
+                    chooseSpot = rand.nextInt(boardSize);
                 }
-                board[3][chooseSpot] = nextCell;
+                board[three][chooseSpot] = nextCell;
                 createNextCell();
                 score();
             }
 
         } else if (direction == Direction.DOWN) {
             mover = false;
-            for (int row = 3; row >= 0; row--) {
+            for (int row = three; row >= 0; row--) {
                 for (int col = 0; col < boardSize; col++) {
 
                     if (moveAvailable(row, col, Direction.DOWN)) {
@@ -150,9 +156,9 @@ public class ThreesTwoGame {
             }
 
             if (mover) {
-                int chooseSpot = rand.nextInt(4);
+                int chooseSpot = rand.nextInt(boardSize);
                 while (!board[0][chooseSpot].isEmpty()) {
-                    chooseSpot = rand.nextInt(4);
+                    chooseSpot = rand.nextInt(boardSize);
                 }
                 board[0][chooseSpot] = nextCell;
                 createNextCell();
@@ -184,18 +190,18 @@ public class ThreesTwoGame {
             }
 
             if (mover) {
-                int chooseSpot = rand.nextInt(4);
-                while (!board[chooseSpot][3].isEmpty()) {
-                    chooseSpot = rand.nextInt(4);
+                int chooseSpot = rand.nextInt(boardSize);
+                while (!board[chooseSpot][three].isEmpty()) {
+                    chooseSpot = rand.nextInt(boardSize);
                 }
-                board[chooseSpot][3] = nextCell;
+                board[chooseSpot][three] = nextCell;
                 createNextCell();
                 score();
             }
         } else if (direction == Direction.RIGHT) {
             mover = false;
             for (int row = 0; row < boardSize; row++) {
-                for (int col = 3; col >= 0; col--) {
+                for (int col = three; col >= 0; col--) {
 
                     if (moveAvailable(row, col, Direction.RIGHT)) {
 
@@ -218,9 +224,9 @@ public class ThreesTwoGame {
             }
 
             if (mover) {
-                int chooseSpot = rand.nextInt(4);
+                int chooseSpot = rand.nextInt(boardSize);
                 while (!board[chooseSpot][0].isEmpty()) {
-                    chooseSpot = rand.nextInt(4);
+                    chooseSpot = rand.nextInt(boardSize);
                 }
                 board[chooseSpot][0] = nextCell;
                 createNextCell();
@@ -242,7 +248,8 @@ public class ThreesTwoGame {
      * @param direction The direction the player is inputting
      * @return whether or not a move is available for that cell
      ***************************************************************/
-    private boolean moveAvailable(int row, int col, final Direction direction) {
+    private boolean moveAvailable(final int row, final int col,
+            final Direction direction) {
 
         if (direction == Direction.UP) {
 
@@ -257,7 +264,6 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
 
             if (board[row][col].getValue() == 2) {
@@ -267,10 +273,9 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
 
-            if (board[row][col].getValue() >= 3) {
+            if (board[row][col].getValue() >= three) {
 
                 if (board[row - 1][col].isEmpty()
                         || board[row][col].getValue()
@@ -279,13 +284,12 @@ public class ThreesTwoGame {
                 }
 
                 return false;
-
             }
         }
 
         if (direction == Direction.DOWN) {
 
-            if (row == 3) {
+            if (row == three) {
                 return false;
             }
 
@@ -296,7 +300,6 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
 
             if (board[row][col].getValue() == 2) {
@@ -306,10 +309,9 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
 
-            if (board[row][col].getValue() >= 3) {
+            if (board[row][col].getValue() >= three) {
 
                 if (board[row + 1][col].isEmpty()
                         || board[row][col].getValue()
@@ -317,9 +319,7 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
-
         }
 
         if (direction == Direction.LEFT) {
@@ -335,7 +335,6 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
 
             if (board[row][col].getValue() == 2) {
@@ -346,10 +345,9 @@ public class ThreesTwoGame {
                 }
 
                 return false;
-
             }
 
-            if (board[row][col].getValue() >= 3) {
+            if (board[row][col].getValue() >= three) {
 
                 if (board[row][col - 1].isEmpty()
                         || board[row][col].getValue()
@@ -357,14 +355,12 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
-
         }
 
         if (direction == Direction.RIGHT) {
 
-            if (col == 3) {
+            if (col == three) {
                 return false;
             }
 
@@ -384,9 +380,9 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
-            if (board[row][col].getValue() >= 3) {
+
+            if (board[row][col].getValue() >= three) {
 
                 if (board[row][col + 1].isEmpty()
                         || board[row][col].getValue()
@@ -394,9 +390,7 @@ public class ThreesTwoGame {
                     return true;
                 }
                 return false;
-
             }
-
         }
         return false;
     }
@@ -411,8 +405,8 @@ public class ThreesTwoGame {
     public GameStatus getGameStatus() {
         boolean stat = true;
         outerloop:
-            for (int row = 0; row < 4; row++) {
-                for (int col = 0; col < 4; col++) {
+            for (int row = 0; row < boardSize; row++) {
+                for (int col = 0; col < boardSize; col++) {
                     if (((!moveAvailable(row, col, Direction.UP))
                             && (!moveAvailable(row, col, Direction.DOWN))
                             && (!moveAvailable(row, col, Direction.LEFT))
@@ -443,8 +437,8 @@ public class ThreesTwoGame {
      ***************************************************************/
     public int score() {
         score = 0;
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 4; col++) {
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
                 score += board[row][col].getValue();
             }
         }
@@ -560,7 +554,8 @@ public class ThreesTwoGame {
      * be added to the board.
      ***************************************************************/
     private void createNextCell() {
-        nextCell = new Cell(false, new Random().nextInt(3) + 1);
+        int next = three;
+        nextCell = new Cell(false, new Random().nextInt(next) + 1);
     }
 
     /***************************************************************
@@ -588,11 +583,11 @@ public class ThreesTwoGame {
         int startingCells = 0;
         Random rand = new Random();
 
-        while (startingCells < 9) {
+        while (startingCells < nine) {
             int row = rand.nextInt(boardSize);
             int col = rand.nextInt(boardSize);
 
-            int val = rand.nextInt(3) + 1;
+            int val = rand.nextInt(three) + 1;
 
             if (board[row][col].isEmpty()) {
                 board[row][col] = new Cell(false, val);

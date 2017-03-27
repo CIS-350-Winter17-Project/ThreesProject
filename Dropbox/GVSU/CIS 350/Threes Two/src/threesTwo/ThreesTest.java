@@ -1,66 +1,99 @@
 package threesTwo;
 
-import static org.junit.Assert.*;  // This is the preferred way per junit docs
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+/***********************************************
+ * These are the tests for the game.
+ * @author anthony
+ * @author Scott
+ * @author Dylan
+ *
+ ***********************************************/
+
 public class ThreesTest {
 
+    /** For the Checkstyle warnings. */
+    private final int three = 3;
+
+    /** For the Checkstyle warnings. */
+    private final int four = 4;
+
+    /** For the Checkstyle warnings. */
+    private final int one27 = 127;
+
+    /** For the Checkstyle warnings. */
+    private final int threeTwo = 32;
+
+    /************************
+     * Test is cell is empty.
+     ************************/
     @Test
-	public void cellBooleanTest(){
-		Cell test = new Cell(false, 0);
-		assertEquals(test.isEmpty(), false);
-		test.setEmpty(true);
-		assertEquals(test.isEmpty(), true);
+    public void cellBooleanTest() {
+        Cell test = new Cell(false, 0);
+        assertEquals(test.isEmpty(), false);
+        test.setEmpty(true);
+        assertEquals(test.isEmpty(), true);
 
-		test = new Cell(true, 0);
-		assertEquals(test.isEmpty(), true);
-		test.setEmpty(false);
-		assertEquals(test.isEmpty(), false);
-	}
+        test = new Cell(true, 0);
+        assertEquals(test.isEmpty(), true);
+        test.setEmpty(false);
+        assertEquals(test.isEmpty(), false);
+    }
 
-	@Test
-	public void cellValueTest() {
+    /*************************************
+     * Test is value is set appropriately.
+     *************************************/
+    @Test
+    public void cellValueTest() {
 
-		Cell test = new Cell(false, 0);
-		assertEquals(test.getValue(), 0);
-		test.setValue(3);
-		assertEquals(test.getValue(), 3);
+        Cell test = new Cell(false, 0);
+        assertEquals(test.getValue(), 0);
+        test.setValue(three);
+        assertEquals(test.getValue(), three);
 
-		test = new Cell(true, 2);
-		assertEquals(test.getValue(), 2);
-		test.setValue(0);
-		assertEquals(test.getValue(), 0);
-	}
+        test = new Cell(true, 2);
+        assertEquals(test.getValue(), 2);
+        test.setValue(0);
+        assertEquals(test.getValue(), 0);
+    }
 
-	@Test
-	public void gameStatusTest(){
-		ThreesTwoGame game = new ThreesTwoGame();
-		assertEquals(GameStatus.IN_PROGRESS, game.getGameStatus());
-		Cell test = new Cell(false, 1);
-		for (int row = 0; row < 4; row++) {
-			for (int col = 0; col < 4; col++) {
-				game.setCells(row, col, test);
-			}
-		}
-		assertEquals(GameStatus.GAME_OVER, game.getGameStatus());
-	}
+    /***********************************
+     * Check the status of the game.
+     ***********************************/
+    @Test
+    public void gameStatusTest() {
+        ThreesTwoGame game = new ThreesTwoGame();
+        assertEquals(GameStatus.IN_PROGRESS, game.getGameStatus());
+        Cell test = new Cell(false, 1);
+        for (int row = 0; row < four; row++) {
+            for (int col = 0; col < four; col++) {
+                game.setCells(row, col, test);
+            }
+        }
+        assertEquals(GameStatus.GAME_OVER, game.getGameStatus());
+    }
 
-
+    /***
+     * stop here.
+     */
 	@Test
 	public void gameStatusTest2() {
 		ThreesTwoGame game = new ThreesTwoGame();
-		Cell test = new Cell(false, 3);
-		for (int row = 0; row < 4; row ++) {
-			for (int col = 0; col < 4; col ++) {
+		Cell test = new Cell(false, three);
+		for (int row = 0; row < four; row++) {
+			for (int col = 0; col < four; col++) {
 				game.setCells(row, col, test);
 			}
 		}
 		assertEquals(GameStatus.IN_PROGRESS, game.getGameStatus());
 
 		test = new Cell(false, 2);
-		for (int row = 0; row < 4; row ++) {
-			for (int col = 0; col < 4; col ++) {
+		for (int row = 0; row < four; row++) {
+			for (int col = 0; col < four; col++) {
 				game.setCells(row, col, test);
 			}
 		}
@@ -72,8 +105,8 @@ public class ThreesTest {
 
 		ThreesTwoGame game = new ThreesTwoGame();
 		Cell test = new Cell(false, 2);
-		for (int row = 0; row < 4; row ++) {
-			for (int col = 0; col < 4; col ++) {
+		for (int row = 0; row < four; row++) {
+			for (int col = 0; col < four; col++) {
 				game.setCells(row, col, test);
 			}
 		 }
@@ -86,22 +119,22 @@ public class ThreesTest {
 	public void nextCellTest() {
 
 		ThreesTwoGame game = new ThreesTwoGame();
-		assertFalse(game.getNextCell().getValue() > 3);
-		assertTrue(game.getNextCell().getValue() <= 3);
+		assertFalse(game.getNextCell().getValue() > three);
+		assertTrue(game.getNextCell().getValue() <= three);
 	}
 
 	@Test
 	public void testScore() {
 
 		ThreesTwoGame game = new ThreesTwoGame();
-		assertEquals(127, game.getHighScore());
-		Cell test = new Cell (false, 2);
-		for (int row = 0; row < 4; row ++){
-			for (int col = 0; col < 4; col ++){
+		assertEquals(one27, game.getHighScore());
+		Cell test = new Cell(false, 2);
+		for (int row = 0; row < four; row++) {
+			for (int col = 0; col < four; col++) {
 				game.setCells(row, col, test);
 			}
 		}
 		game.score();
-		assertEquals(32, game.getScore());
+		assertEquals(threeTwo, game.getScore());
 	}
 }
