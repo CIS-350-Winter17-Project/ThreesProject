@@ -1,4 +1,4 @@
-package threesTwo;
+package com.cis350.threesTwo;
 
 /**********************************************************************
 * This is an enumerated class type that tells the status of the game.

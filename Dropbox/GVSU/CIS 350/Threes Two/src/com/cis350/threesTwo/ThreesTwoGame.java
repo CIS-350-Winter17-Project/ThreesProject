@@ -1,4 +1,4 @@
-package threesTwo;
+package com.cis350.threesTwo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -420,7 +420,7 @@ public class ThreesTwoGame {
                 }
 
             }
-        if (stat) {
+        if (!stat) {
             status = GameStatus.GAME_OVER;
             System.out.println("Game Over");
             score();

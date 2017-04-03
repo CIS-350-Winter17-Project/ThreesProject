@@ -1,11 +1,10 @@
-package threesTwo;
+package com.cis350.threesTwo;
 
 import javax.swing.SwingUtilities;
 
 /**********************************************************************
  * Main "Threes" class. Used to initiate the board, and ultimately
  * run the game.
- *
  *
  * @author Scott Lumsden
  * @author Dylan Shoup

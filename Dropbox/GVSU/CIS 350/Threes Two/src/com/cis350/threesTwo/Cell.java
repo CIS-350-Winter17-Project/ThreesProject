@@ -1,4 +1,4 @@
-package threesTwo;
+package com.cis350.threesTwo;
 
 /**********************************************************************
  * These Cells are what the game board is composed of, and contains the
