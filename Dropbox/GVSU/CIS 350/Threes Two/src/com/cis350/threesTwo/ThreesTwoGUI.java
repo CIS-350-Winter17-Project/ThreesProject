@@ -5,11 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -312,9 +317,49 @@ public class ThreesTwoGUI extends JPanel {
 
     }
 
+    /*****************************************************************
+     * Add menu items to save and load the game.
+     *
+     * @param frame The frame the menu is attached to.
+     ****************************************************************/
+    private static void createMenu(final JFrame frame) {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("File");
+
+        JMenuItem save = new JMenuItem("Save");
+        save.addActionListener(e -> {
+            game.saveGame();
+        });
+
+        // This can't be done with a lambda because it needs two statements.
+        JMenuItem load = new JMenuItem("Load");
+        load.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+        });
+
+        JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(e -> {
+            System.exit(0);
+        });
+
+        menu.add(save);
+        menu.add(load);
+        menu.add(exit);
+        menuBar.add(menu);
+
+        frame.setJMenuBar(menuBar);
+    }
+
     /******************************************************************
      * Dictates where each individual JButton, JLabel, JPanel goes and
      * what is assigned to that spot.
+     *
      *****************************************************************/
     public static void playGame() {
 
@@ -363,6 +408,7 @@ public class ThreesTwoGUI extends JPanel {
         main.add(bottom, BorderLayout.SOUTH);
 
         JFrame frame = new JFrame("Threes!");
+        createMenu(frame);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(main);
         frame.pack();

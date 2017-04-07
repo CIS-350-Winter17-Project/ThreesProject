@@ -43,6 +43,9 @@ public class ThreesTwoGame {
     /** The file that is created to preserve the high score. */
     private final String filename = "high_score.txt";
 
+    /** The file that saves the game state. */
+    private final String savedGame = "save_data.txt";
+
     /** The size of the board. Set to stay at 4 */
     private final int boardSize = 4;
 
@@ -531,6 +534,63 @@ public class ThreesTwoGame {
     }
 
     /***************************************************************
+    * Save the game state, available from the menu bar.  If game is
+    * unable to be saved, it simply won't happen.
+    ***************************************************************/
+    public void saveGame() {
+
+        Path file = FileSystems.getDefault().getPath(savedGame);
+        String saveScore = Integer.toString(score);
+        String newCell = Integer.toString(nextCell.getValue());
+
+        try (BufferedWriter writer =
+                Files.newBufferedWriter(file)) {
+
+            writer.write(saveScore);
+            writer.newLine();
+            writer.write(newCell);
+            writer.newLine();
+            for (int row = 0; row < boardSize; row++) {
+                for (int col = 0; col < boardSize; col++) {
+                    writer.write(Integer.toString(board[row][col].getValue()));
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            System.err.format("IOException: %s%n", e);
+        }
+    }
+
+    /***************************************************************
+     * Load the game state, available in the menu bar.  If the game
+     * is unable to load, i.e. a game state has not been saved, it
+     * simply wont happen.
+     **************************************************************/
+    public void loadGame() {
+        Path file = FileSystems.getDefault().getPath(savedGame);
+
+        try (BufferedReader reader = Files.newBufferedReader(file)) {
+
+            score = Integer.parseInt(reader.readLine());
+            nextCell = new Cell(false, Integer.parseInt(reader.readLine()));
+
+            for (int row = 0; row < boardSize; row++) {
+                for (int col = 0; col < boardSize; col++) {
+                    int i = Integer.parseInt(reader.readLine());
+                    if (i != 0) {
+                        board[row][col] = new Cell(false, i);
+                    } else {
+                        board[row][col] = new Cell(true, 0);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            // File does not exist, so do nothing
+        }
+    }
+
+    /***************************************************************
      * Returns the board as it is, used in conjunction with the GUI.
      * @return the board of 2D array of Cells.
      ***************************************************************/
@@ -600,5 +660,15 @@ public class ThreesTwoGame {
         score = 0;
     }
 
-}
+    /******************************************************************
+     * This method is for testing. It allows us to test whether each
+     * Cell is appropriately set.
+     * @param row The row position of this particular Cell.
+     * @param col The column position of this particular Cell.
+     * @return The cell at board[row][col].
+     *****************************************************************/
+     public Cell getCells(final int row, final int col) {
+         return board[row][col];
+     }
 
+}

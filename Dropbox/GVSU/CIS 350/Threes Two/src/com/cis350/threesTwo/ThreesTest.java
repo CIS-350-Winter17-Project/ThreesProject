@@ -23,6 +23,9 @@ public class ThreesTest {
     private final int four = 4;
 
     /** For the Checkstyle warnings. */
+    private final int six = 6;
+
+    /** For the Checkstyle warnings. */
     private final int one27 = 127;
 
     /** For the Checkstyle warnings. */
@@ -145,5 +148,53 @@ public class ThreesTest {
         }
         game.score();
         assertEquals(threeTwo, game.getScore());
+    }
+
+    /*************************************************
+     * Check if the moves are producing valid cells.
+     *************************************************/
+    @Test
+    public void testMove() {
+
+        ThreesTwoGame game = new ThreesTwoGame();
+
+        game.setCells(0, 0, new Cell(false, 1));
+        game.setCells(1, 0, new Cell(false, 2));
+
+        game.move(Direction.UP);
+
+        Cell result = game.getCells(0, 0);
+
+        assertEquals(three, result.getValue());
+
+        game.setCells(1,  0, new Cell(false, 1));
+
+        game.move(Direction.UP);
+
+        result = game.getCells(0, 0);
+
+        assertEquals(three, result.getValue());
+
+        game.setCells(0,  1, new Cell(false, three));
+        game.setCells(0,  2, new Cell(true, 0));
+
+        game.move(Direction.RIGHT);
+
+        result = game.getCells(0, 1);
+
+        assertEquals(three, result.getValue());
+        result = game.getCells(0, 2);
+        assertEquals(three, result.getValue());
+
+        game.setCells(0, three, new Cell(false, 2));
+
+        game.move(Direction.RIGHT);
+
+        result = game.getCells(0, three);
+
+        assertEquals(2, result.getValue());
+        result = game.getCells(0, 2);
+        assertEquals(six, result.getValue());
+
     }
 }
