@@ -536,8 +536,10 @@ public class ThreesTwoGame {
     /***************************************************************
     * Save the game state, available from the menu bar.  If game is
     * unable to be saved, it simply won't happen.
+    *
+    * @return true if successful
     ***************************************************************/
-    public void saveGame() {
+    public boolean saveGame() {
 
         Path file = FileSystems.getDefault().getPath(savedGame);
         String saveScore = Integer.toString(score);
@@ -556,17 +558,21 @@ public class ThreesTwoGame {
                     writer.newLine();
                 }
             }
+            return true;
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
         }
+        return false;
     }
 
     /***************************************************************
      * Load the game state, available in the menu bar.  If the game
      * is unable to load, i.e. a game state has not been saved, it
      * simply wont happen.
+     *
+     * @return true if successful
      **************************************************************/
-    public void loadGame() {
+    public boolean loadGame() {
         Path file = FileSystems.getDefault().getPath(savedGame);
 
         try (BufferedReader reader = Files.newBufferedReader(file)) {
@@ -585,9 +591,12 @@ public class ThreesTwoGame {
                 }
             }
 
+            return true;
         } catch (IOException e) {
-            // File does not exist, so do nothing
+            System.err.format("IOException: %s%n", e);
         }
+
+        return false;
     }
 
     /***************************************************************

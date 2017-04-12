@@ -152,15 +152,6 @@ public class ThreesTwoGUI extends JPanel {
         // get high score
         hScore = new JLabel();
 
-        // restart button
-        restart = new JButton("DON'T");
-
-        restart.addActionListener(e -> {
-
-            game.resetMain();
-
-        });
-
         displayBoard();
 
         addKeyListener(new KeyAdapter() {
@@ -322,13 +313,17 @@ public class ThreesTwoGUI extends JPanel {
      *
      * @param frame The frame the menu is attached to.
      ****************************************************************/
-    private static void createMenu(final JFrame frame) {
+    private void createMenu(final JFrame frame) {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
 
         JMenuItem save = new JMenuItem("Save");
         save.addActionListener(e -> {
-            game.saveGame();
+            if (!game.saveGame()) {
+                JOptionPane.showMessageDialog(null,
+                        "The game was not saved", "Oops",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         // This can't be done with a lambda because it needs two statements.
@@ -337,7 +332,12 @@ public class ThreesTwoGUI extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
+                if (!game.loadGame()) {
+                    JOptionPane.showMessageDialog(null,
+                            "The game cannot be loaded", "Oops",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                displayBoard();
 
             }
 
@@ -361,7 +361,7 @@ public class ThreesTwoGUI extends JPanel {
      * what is assigned to that spot.
      *
      *****************************************************************/
-    public static void playGame() {
+    public void playGame() {
 
         ThreesTwoGUI gui = new ThreesTwoGUI();
 

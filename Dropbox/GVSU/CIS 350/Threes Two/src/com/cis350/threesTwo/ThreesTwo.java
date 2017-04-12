@@ -25,6 +25,6 @@ public final class ThreesTwo {
      ***********************************************************/
     public static void main(final String[] args) {
         // This is going to be my main class for our group project.
-        SwingUtilities.invokeLater(() -> ThreesTwoGUI.playGame());
+        SwingUtilities.invokeLater(() -> new ThreesTwoGUI().playGame());
     }
 }
