@@ -9,7 +9,7 @@ package com.cis350.threesTwo;
 * @author Scott Lumsden
 * @author Dylan Shoup
 *
-*@version 0.1 March 3, 2017
+*@version 0.2 April 19, 2017
 *********************************************************************/
 
 public enum GameStatus {

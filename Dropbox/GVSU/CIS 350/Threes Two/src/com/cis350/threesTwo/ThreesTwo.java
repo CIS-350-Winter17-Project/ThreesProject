@@ -9,13 +9,15 @@ import javax.swing.SwingUtilities;
  * @author Scott Lumsden
  * @author Dylan Shoup
  * @author Anthony Blanton
- * @version 0.1 March 3, 2017
+ *
+ * @version 0.2 April 19, 2017
  *********************************************************************/
 
 public final class ThreesTwo {
 
     /******************************************************************
-     * Private constructor so an instance cannot be created.
+     * Private constructor so an instance cannot be created outside
+     * of this class.
      *****************************************************************/
     private ThreesTwo() { }
 

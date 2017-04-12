@@ -2,7 +2,6 @@ package com.cis350.threesTwo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,14 +9,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.border.Border;
 
@@ -28,7 +26,7 @@ import javax.swing.border.Border;
  * @author Scott Lumsden
  * @author Dylan Shoup
  * @author Anthony Blanton
- * @version 0.1 March 3, 2017
+ * @version 0.2 April 19, 2017
  *********************************************************************/
 
 public class ThreesTwoGUI extends JPanel {
@@ -43,20 +41,15 @@ public class ThreesTwoGUI extends JPanel {
     private Cell[][] gameBoard;
 
     /** Shows the player what piece will appear next after a move. */
-    private static JLabel nextCell;
-
-    /**
-     * The restart button that will restart the game and board state.
-     */
-    private static JButton restart;
+    private JLabel nextCell;
 
     /** Current score that the player has accumulated in the current
      * play-through.
      */
-    private static JLabel cScore;
+    private JLabel cScore;
 
     /** The overall highScore that the player has ever achieved. */
-    private static JLabel hScore;
+    private JLabel hScore;
 
     /** The size of the board, which will always be four. */
     private final int boardSize = 4;
@@ -64,38 +57,29 @@ public class ThreesTwoGUI extends JPanel {
     /** For the Checkstyle warnings. */
     private final int bordThick = 10;
 
-    /** For the Checkstyle warnings. Height of new dimension. */
-    private final int dHeight = 48;
-
-    /** Width of new dimension. */
-    private final int dWidth = 68;
-
     /** Font for tiles. */
-    private final int fontSize = 24;
+    private final int fontSize = 48;
+
+    /** A smaller font. */
+    private final int smallFont = 24;
+
+    /** The color red in the backgrounds. */
+    private final int red = 208;
+
+    /** The color green in the backgrounds. */
+    private final int green = 230;
+
+    /** The color blue in the backgrounds. */
+    private final int blue = 223;
+
+    /** And here's the color. */
+    private final Color c = new Color(red, green, blue);
 
     /** Random number bound. */
     private final int bound = 3;
 
-    /** For the Checkstyle warnings. */
-    private static final int S_BOUND = 3;
-
     /** More checkstyle stuff. */
-    private static final int FIVE = 5;
-
-    /** For the Checkstyle warnings. */
-    private final int rColor = 230;
-
-    /** For the Checkstyle warnings. */
-    private final int gColor = 255;
-
-    /** For the Checkstyle warnings. */
-    private final int dColor = 102;
-
-    /** For the Checkstyle warnings. */
-    private static final int W_HEIGHT = 75;
-
-    /** For the Checkstyle warnings. */
-    private static final int W_WIDTH = 280;
+    private final int five = 5;
 
 
     /******************************************************************
@@ -118,22 +102,16 @@ public class ThreesTwoGUI extends JPanel {
         board = new JLabel[boardSize][boardSize];
         setLayout(new GridLayout(boardSize, boardSize, 2, 2));
 
-        // for the numbers
-        Dimension d = new Dimension(dHeight, dWidth);
-
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
 
-                Color c = new Color(rColor, rColor, gColor);
                 Border b = BorderFactory.createLineBorder(c, 2, true);
 
                 board[row][col] = new JLabel();
-                board[row][col].setPreferredSize(d);
 
                 board[row][col].setBackground(c);
                 board[row][col].setForeground(Color.WHITE);
 
-                board[row][col].setBorder(b);
                 board[row][col].setOpaque(true);
 
                 add(board[row][col]);
@@ -143,8 +121,6 @@ public class ThreesTwoGUI extends JPanel {
 
         // preview piece
         nextCell = new JLabel();
-        nextCell.setPreferredSize(d);
-        nextCell.setOpaque(true);
 
         // get score
         cScore = new JLabel();
@@ -158,8 +134,9 @@ public class ThreesTwoGUI extends JPanel {
 
             @Override
             public void keyPressed(final KeyEvent arg0) {
-                // TODO Auto-generated method stub
+
                 moveEvent(arg0);
+
                 displayBoard();
 
                 if (game.getGameStatus() == GameStatus.GAME_OVER) {
@@ -220,33 +197,25 @@ public class ThreesTwoGUI extends JPanel {
         cScore.setText("Score: " + Integer.toString(score));
         hScore.setText("High Score: " + Integer.toString(highScore));
 
-        nextCell.setHorizontalAlignment(SwingConstants.CENTER);
+        cScore.setFont(new Font("Calibri", Font.ITALIC, smallFont));
+        hScore.setFont(new Font("Calibri", Font.ITALIC, smallFont));
+
         nextCell.setFont(new Font("Calibri", Font.BOLD, fontSize));
         nextCell.setText(" ");
 
         if (nextValue == 1) {
-            Color c = new Color(dColor, dColor, gColor);
-            Border b = BorderFactory.createLineBorder(c, 2, true);
 
-            nextCell.setBackground(c);
-            nextCell.setBorder(b);
+            nextCell.setIcon(new ImageIcon("images/one.png"));
         }
 
         if (nextValue == 2) {
-            Color c = new Color(gColor, 0, dColor);
-            Border b = BorderFactory.createLineBorder(c, 2, true);
 
-            nextCell.setBorder(b);
-            nextCell.setBackground(c);
+            nextCell.setIcon(new ImageIcon("images/two.png"));
         }
 
         if (nextValue >= bound) {
-            Border b = BorderFactory.createLineBorder(Color.WHITE, 2,
-                    true);
 
-            nextCell.setBackground(Color.WHITE);
-
-            nextCell.setBorder(b);
+            nextCell.setIcon(new ImageIcon("images/three.png"));
         }
 
         for (int row = 0; row < boardSize; row++) {
@@ -255,51 +224,44 @@ public class ThreesTwoGUI extends JPanel {
                 int value = gameBoard[row][col].getValue();
 
                 board[row][col]
-                    .setHorizontalAlignment(SwingConstants.CENTER);
-                board[row][col]
                         .setFont(new Font("Calibri",
                                 Font.BOLD, fontSize));
 
                 if (value == 0) {
-                    Color c = new Color(rColor, rColor, gColor);
-                    Border b = BorderFactory.createLineBorder(c,
-                            2, true);
 
                     board[row][col].setBackground(c);
-                    board[row][col].setBorder(b);
                     board[row][col].setText(" ");
+                    board[row][col].setIcon(null);
 
                 }
 
                 if (value == 1) {
-                    Color c = new Color(dColor, dColor, gColor);
-                    Border b = BorderFactory.createLineBorder(c, 2,
-                            true);
 
+                    board[row][col].setIcon(new ImageIcon("images/one.png"));
                     board[row][col].setText(Integer.toString(value));
-                    board[row][col].setBackground(c);
                     board[row][col].setForeground(Color.WHITE);
-                    board[row][col].setBorder(b);
+                    board[row][col].setHorizontalTextPosition(JLabel.CENTER);
+                    board[row][col].setVerticalTextPosition(JLabel.CENTER);
 
                 } else if (value == 2) {
-                    Color c = new Color(gColor, 0, dColor);
-                    Border b = BorderFactory.createLineBorder(c, 2,
-                            true);
 
+                    board[row][col].setIcon(new ImageIcon("images/two.png"));
                     board[row][col].setText(Integer.toString(value));
-                    board[row][col].setBorder(b);
-                    board[row][col].setBackground(c);
+                    board[row][col].setForeground(Color.WHITE);
+                    board[row][col].setHorizontalTextPosition(JLabel.CENTER);
+                    board[row][col].setVerticalTextPosition(JLabel.CENTER);
+
                     board[row][col].setForeground(Color.WHITE);
 
                 } else if (value >= bound) {
 
-                    Border b = BorderFactory
-                            .createLineBorder(Color.WHITE, 2, true);
+                    board[row][col].setIcon(new ImageIcon("images/three.png"));
+                    board[row][col].setText(Integer.toString(value));
+                    board[row][col].setHorizontalTextPosition(JLabel.CENTER);
+                    board[row][col].setVerticalTextPosition(JLabel.CENTER);
 
                     board[row][col].setForeground(Color.BLACK);
                     board[row][col].setBackground(Color.WHITE);
-
-                    board[row][col].setBorder(b);
 
                     board[row][col].setText(Integer.toString(value));
                 }
@@ -336,9 +298,11 @@ public class ThreesTwoGUI extends JPanel {
                     JOptionPane.showMessageDialog(null,
                             "The game cannot be loaded", "Oops",
                             JOptionPane.ERROR_MESSAGE);
-                }
-                displayBoard();
+                } else {
 
+                    JOptionPane.showMessageDialog(null,
+                            "Game loaded, press any key to refresh");
+                }
             }
 
         });
@@ -365,11 +329,13 @@ public class ThreesTwoGUI extends JPanel {
 
         ThreesTwoGUI gui = new ThreesTwoGUI();
 
-        JPanel main = new JPanel(new BorderLayout(FIVE, FIVE));
+        JPanel main = new JPanel(new BorderLayout(five, five));
         main.setBackground(Color.WHITE);
+
+        // Individual panels for each section
         JPanel top = new JPanel();
         JPanel bottom = new JPanel();
-        JPanel west = new JPanel(new GridLayout(S_BOUND, 1, FIVE, FIVE));
+        JPanel west = new JPanel(new GridLayout(bound, 1, five, five));
         JPanel east = new JPanel();
 
         top.setBackground(Color.WHITE);
@@ -378,25 +344,26 @@ public class ThreesTwoGUI extends JPanel {
         east.setBackground(Color.WHITE);
 
         // side panel top
-        JPanel nextPanel = new JPanel(new BorderLayout(FIVE, FIVE));
-        JPanel scorePanel = new JPanel(new BorderLayout(FIVE, FIVE));
-        JLabel next = new JLabel("Next");
-        JPanel nextWest = new JPanel();
-        JPanel nextSouth = new JPanel();
-        JPanel nextEast = new JPanel();
+        JPanel nextPanel = new JPanel(new BorderLayout(five, five));
+        JPanel scorePanel = new JPanel(new BorderLayout(five, five));
 
-        west.setPreferredSize(new Dimension(W_HEIGHT, W_WIDTH));
-        west.setBorder(BorderFactory.createLineBorder(Color.WHITE, FIVE));
+        nextPanel.setBackground(c);
+        nextPanel.setOpaque(true);
+
+        JLabel next = new JLabel("Next");
+
+        next.setFont(new Font("Calibri", Font.ITALIC, smallFont));
+
+        next.setBackground(c);
+
+        west.setBorder(BorderFactory.createLineBorder(Color.WHITE, five));
 
         scorePanel.add(hScore, BorderLayout.NORTH);
-
         scorePanel.add(cScore, BorderLayout.SOUTH);
+        scorePanel.setBackground(c);
 
         nextPanel.add(next, BorderLayout.NORTH);
         nextPanel.add(nextCell, BorderLayout.CENTER);
-        nextPanel.add(nextWest, BorderLayout.WEST);
-        nextPanel.add(nextSouth, BorderLayout.SOUTH);
-        nextPanel.add(nextEast, BorderLayout.EAST);
 
         west.add(nextPanel);
 
