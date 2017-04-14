@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.border.Border;
 
 /**********************************************************************
  * The Graphical User Interface for the Threes game. This creates the
@@ -41,12 +40,12 @@ public class ThreesTwoGUI extends JPanel {
     private Cell[][] gameBoard;
 
     /** Shows the player what piece will appear next after a move. */
-    private JLabel nextCell;
+    private static JLabel nextCell;
 
     /** Current score that the player has accumulated in the current
      * play-through.
      */
-    private JLabel cScore;
+    private static JLabel cScore;
 
     /** The overall highScore that the player has ever achieved. */
     private JLabel hScore;
@@ -54,7 +53,7 @@ public class ThreesTwoGUI extends JPanel {
     /** The size of the board, which will always be four. */
     private final int boardSize = 4;
 
-    /** For the Checkstyle warnings. */
+    /** The thickness of a border. */
     private final int bordThick = 10;
 
     /** Font for tiles. */
@@ -78,7 +77,7 @@ public class ThreesTwoGUI extends JPanel {
     /** Random number bound. */
     private final int bound = 3;
 
-    /** More checkstyle stuff. */
+    /** A border width for some of the JPanels. */
     private final int five = 5;
 
 
@@ -104,8 +103,6 @@ public class ThreesTwoGUI extends JPanel {
 
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
-
-                Border b = BorderFactory.createLineBorder(c, 2, true);
 
                 board[row][col] = new JLabel();
 
