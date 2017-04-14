@@ -15,6 +15,9 @@ import javax.swing.SwingUtilities;
 
 public final class ThreesTwo {
 
+    /** This seems to be necessary for the class diagram. */
+    private static ThreesTwoGUI game;
+
     /******************************************************************
      * Private constructor so an instance cannot be created outside
      * of this class.
@@ -26,7 +29,9 @@ public final class ThreesTwo {
      * @param args Command line args.
      ***********************************************************/
     public static void main(final String[] args) {
-        // This is going to be my main class for our group project.
-        SwingUtilities.invokeLater(() -> new ThreesTwoGUI().playGame());
+
+        game = new ThreesTwoGUI();
+
+        SwingUtilities.invokeLater(() -> game.playGame());
     }
 }

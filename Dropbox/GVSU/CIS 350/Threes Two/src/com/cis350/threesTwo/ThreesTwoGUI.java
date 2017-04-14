@@ -106,8 +106,6 @@ public class ThreesTwoGUI extends JPanel {
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
 
-                Border b = BorderFactory.createLineBorder(c, 2, true);
-
                 board[row][col] = new JLabel();
 
                 board[row][col].setBackground(c);
