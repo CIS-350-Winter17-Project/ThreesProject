@@ -1,5 +1,6 @@
 package com.cis350.threesTwo;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -18,7 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.border.Border;
-
+import java.awt.Robot;
 /**********************************************************************
  * The Graphical User Interface for the Threes game. This creates the
  * visual board, and instantiates the ThreesTwoGame class.
@@ -41,15 +42,15 @@ public class ThreesTwoGUI extends JPanel {
     private Cell[][] gameBoard;
 
     /** Shows the player what piece will appear next after a move. */
-    private JLabel nextCell;
+    private static JLabel nextCell;
 
     /** Current score that the player has accumulated in the current
      * play-through.
      */
-    private JLabel cScore;
+    private static JLabel cScore;
 
     /** The overall highScore that the player has ever achieved. */
-    private JLabel hScore;
+    private static JLabel hScore;
 
     /** The size of the board, which will always be four. */
     private final int boardSize = 4;
@@ -155,9 +156,9 @@ public class ThreesTwoGUI extends JPanel {
             public void keyReleased(final KeyEvent arg0) { }
 
             @Override
-            public void keyTyped(final KeyEvent arg0) { }
+            public void keyTyped( KeyEvent arg0) { }
 
-            private void moveEvent(final KeyEvent e) {
+            private void moveEvent( KeyEvent e) {
 
                 int move = e.getKeyCode();
 
@@ -193,6 +194,7 @@ public class ThreesTwoGUI extends JPanel {
         int score = game.getScore();
         int highScore = game.getHighScore();
         int nextValue = game.getNextCell().getValue();
+        
 
         cScore.setText("Score: " + Integer.toString(score));
         hScore.setText("High Score: " + Integer.toString(highScore));
@@ -221,7 +223,7 @@ public class ThreesTwoGUI extends JPanel {
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
 
-                int value = gameBoard[row][col].getValue();
+            	int value = gameBoard[row][col].getValue();
 
                 board[row][col]
                         .setFont(new Font("Calibri",
@@ -267,7 +269,6 @@ public class ThreesTwoGUI extends JPanel {
                 }
             }
         }
-
     }
 
     /*****************************************************************
@@ -299,12 +300,17 @@ public class ThreesTwoGUI extends JPanel {
                             "The game cannot be loaded", "Oops",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-
                     JOptionPane.showMessageDialog(null,
-                            "Game loaded, press any key to refresh");
+                            "Game loaded");
+                    try{
+                    	Robot robot = new Robot();
+                    	robot.keyPress(KeyEvent.VK_SPACE);
+                    }
+                    catch(AWTException r){
+                    	r.printStackTrace();
+                    }
                 }
             }
-
         });
 
         JMenuItem exit = new JMenuItem("Exit");

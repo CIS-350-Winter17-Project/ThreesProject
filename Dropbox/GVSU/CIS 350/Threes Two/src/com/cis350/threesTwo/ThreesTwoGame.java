@@ -439,7 +439,7 @@ public class ThreesTwoGame {
      * @return the score of that specific round of Threes.
      ***************************************************************/
     public int score() {
-        score = 0;
+    	score = 0;
         for (int row = 0; row < boardSize; row++) {
             for (int col = 0; col < boardSize; col++) {
                 score += board[row][col].getValue();
@@ -542,14 +542,11 @@ public class ThreesTwoGame {
     public boolean saveGame() {
 
         Path file = FileSystems.getDefault().getPath(savedGame);
-        String saveScore = Integer.toString(score);
         String newCell = Integer.toString(nextCell.getValue());
 
         try (BufferedWriter writer =
                 Files.newBufferedWriter(file)) {
 
-            writer.write(saveScore);
-            writer.newLine();
             writer.write(newCell);
             writer.newLine();
             for (int row = 0; row < boardSize; row++) {
@@ -577,7 +574,6 @@ public class ThreesTwoGame {
 
         try (BufferedReader reader = Files.newBufferedReader(file)) {
 
-            score = Integer.parseInt(reader.readLine());
             nextCell = new Cell(false, Integer.parseInt(reader.readLine()));
 
             for (int row = 0; row < boardSize; row++) {
@@ -590,7 +586,7 @@ public class ThreesTwoGame {
                     }
                 }
             }
-
+            score();
             return true;
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
@@ -666,7 +662,7 @@ public class ThreesTwoGame {
         }
 
         status = GameStatus.IN_PROGRESS;
-        score = 0;
+        score();
     }
 
     /******************************************************************
