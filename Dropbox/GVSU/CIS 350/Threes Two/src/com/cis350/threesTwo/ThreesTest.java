@@ -139,7 +139,7 @@ public class ThreesTest {
     public void testScore() {
 
         ThreesTwoGame game = new ThreesTwoGame();
-        assertEquals(one27, game.getHighScore());
+        assertEquals(120, game.getHighScore());
         Cell test = new Cell(false, 2);
         for (int row = 0; row < four; row++) {
             for (int col = 0; col < four; col++) {
@@ -197,4 +197,37 @@ public class ThreesTest {
         assertEquals(six, result.getValue());
 
     }
+    
+    /******************************************************************
+     * Check to make sure that the save & load functions work.
+     *****************************************************************/
+    @Test
+    public void testSaveLoad(){
+    	
+    	ThreesTwoGame game = new ThreesTwoGame();
+    	ThreesTwoGame test = new ThreesTwoGame();
+    	
+    	game.setCells(0, 1, new Cell(false, three));
+    	game.setCells(0, 2, new Cell(false, 2));
+    	
+    	test = game;
+    	
+    	game.saveGame();
+    	
+    	assertTrue(game.saveGame());
+    	
+    	game = new ThreesTwoGame();
+    	
+    	game.loadGame();
+    	
+    	assertTrue(game.loadGame());
+    	
+    	for (int r = 0; r < four; r ++){
+    		for (int c = 0; c < four; c++){
+    			assertEquals(test.getCells(r, c).getValue(), 
+    					game.getCells(r, c).getValue());
+    		}
+    	}
+    			
+    		}
 }
